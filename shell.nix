@@ -38,8 +38,8 @@ mkShell {
 
     # Development
     ruff
-    baserdpyright
-    nixfmt-rfc-style
+    basedpyright
+    nixfmt
     python314Packages.mypy
 
     # Documentation
