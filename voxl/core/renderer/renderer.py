@@ -1,0 +1,48 @@
+from typing import TypedDict
+from logging import Logger, getLogger
+
+from voxl.types import RenderBackend as RenderBackedType
+from voxl.constants import RENDER_BACKEND_NONE
+from voxl.core.windowing.headless import Window
+
+
+class RendererConfig(TypedDict):
+    """The renderer configuration TypedDict, as loaded from `config.yml`.
+
+    Parameters:
+        backend: one of {none, opengl}
+    """
+
+    backend: RenderBackedType
+
+
+class Renderer:
+    """Renderer base class, mainly for development/testing purposes.
+
+    It also serves as a base `Renderer` class for the other renderers to build
+    off of. Also implements the logging configuration.
+
+    Attributes:
+        config (RendererConfig): The renderer configuration TypedDict
+        logger (Logger): Logger instance
+    """
+
+    def __init__(self, config: RendererConfig, window: Window) -> None:
+        self.config: RendererConfig = config
+        self.window: Window = window
+        self.logger: Logger = getLogger("Renderer")
+
+        if not config.get("backend"):
+            self.logger.warning(
+                "Renderer backend not configured. Please set `renderer.backend`"
+                + " in `config.yml`."
+            )
+
+        if config.get("backend") == RENDER_BACKEND_NONE:
+            self.logger.warning(
+                "Running with the dummy renderer. Nothing will be drawn."
+            )
+
+    def render(self, dt: float) -> None:
+        """Does nothing."""
+        ...
