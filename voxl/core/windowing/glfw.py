@@ -78,7 +78,9 @@ class GlfwWindow(Window):
         enable_vsync = self.glfw_config.get("vsync", DEFAULT_ENABLE_VSYNC)
         glfw.swap_interval(int(enable_vsync))
 
-        glfw.window_hint(glfw.SAMPLES, self.glfw_config.get("samples", DEFAULT_SAMPLES))
+        glfw.window_hint(
+            glfw.SAMPLES, self.glfw_config.get("samples", DEFAULT_SAMPLES)
+        )
 
         # TODO key callbacks (keyboard handler?)
         ...

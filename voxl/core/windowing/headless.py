@@ -12,7 +12,9 @@ class WindowConfig(TypedDict):
         backend: one of {headless, glfw}
     """
 
-    backend: WindowBackendType  # TODO make this an enum and move here instead of
+    backend: (
+        WindowBackendType  # TODO make this an enum and move here instead of
+    )
     # contants.py.
 
 
@@ -53,6 +55,7 @@ class Window:
         name: str,
         hook: CallableHook,
     ) -> None:
+        self.logger.debug(f"Registering hook {name} -> {hook}")
         self._drawcall_hooks[name] = hook
 
     def call_hooks(self, dt: float) -> None:

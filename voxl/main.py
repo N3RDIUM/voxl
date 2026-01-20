@@ -13,7 +13,8 @@ from voxl.di_containers import Voxl
 
 @inject
 def main(
-    window: Window = Provide[Voxl.window], renderer: Renderer = Provide[Voxl.renderer]
+    window: Window = Provide[Voxl.window],
+    renderer: Renderer = Provide[Voxl.renderer],
 ) -> None:
     """The main entry point.
 

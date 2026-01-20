@@ -1,6 +1,12 @@
 import platform
 from typing import override
-from OpenGL.GL import glViewport, glClearColor, glClear, GL_COLOR_BUFFER_BIT, GL_TRUE
+from OpenGL.GL import (
+    glViewport,
+    glClearColor,
+    glClear,
+    GL_COLOR_BUFFER_BIT,
+    GL_TRUE,
+)
 
 from voxl.constants import (
     RENDER_BACKEND_OPENGL,
