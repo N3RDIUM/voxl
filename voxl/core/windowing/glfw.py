@@ -1,6 +1,8 @@
 from typing import override
 import glfw
 
+from voxl.types import GlfwWindowPointer
+
 from .headless import Window, WindowConfig
 from voxl.constants import WINDOW_BACKEND_GLFW
 from voxl.default_config import (
@@ -43,7 +45,7 @@ class GlfwWindow(Window):
     Inherits :py:class:`voxl.core.windowing.headless.Window`.
     """
 
-    window: glfw._GLFWwindowPointerT
+    window: GlfwWindowPointer
 
     def __init__(self, config: WindowConfig) -> None:
         """Initialize the glfw window and configure it.

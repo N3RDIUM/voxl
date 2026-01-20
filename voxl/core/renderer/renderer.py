@@ -45,4 +45,4 @@ class Renderer:
 
     def render(self, dt: float) -> None:
         """Does nothing."""
-        ...
+        _ = dt

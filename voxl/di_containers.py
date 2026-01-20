@@ -6,13 +6,14 @@ Todo:
     * Error handling for the backend selectors
 """
 
+from typing import final
 from dependency_injector import containers, providers
 
 from .core import windowing
 from .core import renderer
 from .core import Core
 
-
+@final
 class Voxl(containers.DeclarativeContainer):
     """The main application DI container for Voxl.
 
