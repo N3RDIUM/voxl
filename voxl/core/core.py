@@ -2,6 +2,7 @@ from typing import final
 from dependency_injector import containers, providers
 import logging.config
 
+
 @final
 class Core(containers.DeclarativeContainer):
     """The core functionality DI container. Implements logging.

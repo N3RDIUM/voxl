@@ -13,6 +13,7 @@ from .core import windowing
 from .core import renderer
 from .core import Core
 
+
 @final
 class Voxl(containers.DeclarativeContainer):
     """The main application DI container for Voxl.

@@ -11,4 +11,3 @@ type GlfwWindowPointer = int
 
 # core.renderer
 type RenderBackend = Literal["none", "opengl"]
-
