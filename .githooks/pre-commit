@@ -1,0 +1,12 @@
+#!/bin/sh
+
+ruff check .
+status=$?
+
+if [ $status -ne 0 ]; then
+    echo "ruff check failed, commit aborted"
+    exit 1
+fi
+
+ruff format
+
