@@ -1,0 +1,25 @@
+name: Python unittest
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v22
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Enter nix-shell and run non-GPU tests
+        run: nix-shell --pure --run "python -m unittest discover -s tests -p "test_*.py""
+
