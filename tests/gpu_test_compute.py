@@ -6,9 +6,7 @@ from voxl.core.compute import ComputeManager, ComputePipeline
 
 class TestCompute(unittest.TestCase):
     def test_double(self):
-        manager = ComputeManager({
-            "power_preference": "high-performance"
-        })
+        manager = ComputeManager({"power_preference": "high-performance"})
 
         shader = """
         @group(0) @binding(0)
