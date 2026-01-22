@@ -10,4 +10,3 @@ SAMPLES: int = 1
 
 # ComputeManagerConfig
 POWER_PREFERENCE: str = "high-performance"
-

@@ -44,9 +44,8 @@ class ComputeManager:
         t0 = perf_counter()
         self.logger.info("Initializing wgpu")
         self.adapter = wgpu.gpu.request_adapter_sync(
-            power_preference = self.config.get(
-                "power_preference", 
-                DEFAULT_POWER_PREFERENCE
+            power_preference=self.config.get(
+                "power_preference", DEFAULT_POWER_PREFERENCE
             )
         )
         self.device = self.adapter.request_device_sync()
