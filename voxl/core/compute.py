@@ -2,6 +2,7 @@
 
 # TODO improve docstrings in this file.
 
+from time import perf_counter
 import numpy as np
 from typing_extensions import TypedDict
 from logging import Logger, getLogger
@@ -40,9 +41,13 @@ class ComputeManager:
         self.config = config
         self.logger: Logger = getLogger("ComputeManager")
 
+        t0 = perf_counter()
         self.logger.info("Initializing wgpu")
         self.adapter = wgpu.gpu.request_adapter_sync()
         self.device = self.adapter.request_device_sync()
+
+        # this step is relatively slow. log time elapsed.
+        self.logger.info(f"wgpu init took {perf_counter() - t0} sec")
 
         self.dispatch_queue = []
 

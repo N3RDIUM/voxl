@@ -14,4 +14,4 @@ type GlfwWindowPointer = int
 type RenderBackend = Literal["none", "opengl"]
 
 # core.compute
-type ComputeBindings = dict[int, dict[int, GPUBuffer]] # TODO docstring
+type ComputeBindings = dict[int, dict[int, GPUBuffer]]  # TODO docstring
