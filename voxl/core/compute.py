@@ -53,7 +53,7 @@ class ComputeManager:
         # this step is relatively slow. log time elapsed.
         self.logger.info(f"wgpu init took {perf_counter() - t0} sec")
 
-        self.dispatch_queue = []
+        self.dispatch_queue = [] # TODO TypedDict 'ComputeDispatch'
 
     def compute_pass(self) -> None:
         """Run a single compute pass.
