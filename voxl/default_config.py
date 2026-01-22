@@ -7,3 +7,7 @@ ENABLE_VSYNC: bool = True
 WINDOW_WIDTH: int = 854
 WINDOW_HEIGHT: int = 480
 SAMPLES: int = 1
+
+# ComputeManagerConfig
+POWER_PREFERENCE: str = "high-performance"
+

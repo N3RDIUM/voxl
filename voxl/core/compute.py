@@ -7,6 +7,7 @@ import numpy as np
 from typing_extensions import TypedDict
 from logging import Logger, getLogger
 from voxl.types import ComputeBindings
+from voxl.default_config import POWER_PREFERENCE as DEFAULT_POWER_PREFERENCE
 
 import wgpu
 from wgpu.classes import (
@@ -24,8 +25,7 @@ from wgpu.structs import BindGroupEntry
 class ComputeManagerConfig(TypedDict):
     """The compute manager configuration TypedDict."""
 
-    # TODO configurability
-    ...
+    power_preference: str
 
 
 class ComputeManager:
@@ -43,7 +43,12 @@ class ComputeManager:
 
         t0 = perf_counter()
         self.logger.info("Initializing wgpu")
-        self.adapter = wgpu.gpu.request_adapter_sync()
+        self.adapter = wgpu.gpu.request_adapter_sync(
+            power_preference = self.config.get(
+                "power_preference", 
+                DEFAULT_POWER_PREFERENCE
+            )
+        )
         self.device = self.adapter.request_device_sync()
 
         # this step is relatively slow. log time elapsed.

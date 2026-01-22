@@ -19,4 +19,6 @@ window:
     vsync: true
 renderer:
   backend: "opengl"
+compute:
+  power_preference: "high-performance"
 
