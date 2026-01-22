@@ -200,6 +200,7 @@ class ComputePipeline:
                 :py:data:`voxl.types.ComputeBindings` for more.
             n_workgroups: number of workgroups to dispatch.
         """
+
         pass_encoder.set_pipeline(self.pipeline)
 
         bind_groups: dict[int, GPUBindGroup] = self._build_groups(bindings)
