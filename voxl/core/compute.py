@@ -41,9 +41,7 @@ class ComputeManager:
         self.logger: Logger = getLogger("ComputeManager")
 
         self.logger.info("Initializing wgpu")
-        self.adapter = wgpu.gpu.request_adapter_sync(
-            power_preference="high-performance"
-        )
+        self.adapter = wgpu.gpu.request_adapter_sync()
         self.device = self.adapter.request_device_sync()
 
         self.dispatch_queue = []
