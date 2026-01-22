@@ -5,6 +5,7 @@ only those two, but a render backend is coming soon.
 """
 
 from .core import Core
+from . import compute
 from . import windowing
 
-__all__ = ["Core", "windowing"]
+__all__ = ["Core", "compute", "windowing"]

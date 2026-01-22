@@ -10,6 +10,7 @@ from typing import final
 from dependency_injector import containers, providers
 
 from .core import windowing
+from .core import compute
 from .core import renderer
 from .core import Core
 
@@ -49,4 +50,8 @@ class Voxl(containers.DeclarativeContainer):
             config=config.renderer,
             window=window,
         ),
+    )
+
+    compute_manager = providers.Resource(
+        compute.ComputeManager, config=config.compute
     )

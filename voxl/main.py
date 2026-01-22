@@ -20,7 +20,7 @@ def main(
 
     Starts the application mainloop and handles after-close cleanup.
     """
-    _ = renderer 
+    _ = renderer
 
     try:
         window.mainloop()

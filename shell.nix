@@ -28,6 +28,19 @@ mkShell {
     python314Packages.pillow
     python314Packages.pyzmq
     python314Packages.pyyaml
+    python314Packages.wgpu-py
+
+    # Vulkan compute backend
+    vulkan-tools           # For vulkaninfo, etc.
+    vulkan-loader
+    vulkan-validation-layers
+    libxkbcommon
+    wayland
+    xorg.libX11
+    xorg.libXcursor
+    xorg.libXrandr
+    xorg.libXi
+    pkg-config
 
     # glfw window backend
     python314Packages.glfw
@@ -52,5 +65,20 @@ mkShell {
     # Outsourced deps (also necessary)
     dependency-injector
     pyfastnoisesimd
+  ];
+
+    nativeBuildInputs = [
+    pkgs.pkg-config
+  ];
+
+  # Needed for dynamic libraries in some cases
+  LD_LIBRARY_PATH = with pkgs; lib.makeLibraryPath [
+    vulkan-loader
+    wayland
+    libxkbcommon
+    xorg.libX11
+    xorg.libXcursor
+    xorg.libXrandr
+    xorg.libXi
   ];
 }
