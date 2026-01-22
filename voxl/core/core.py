@@ -9,7 +9,7 @@ class Core(containers.DeclarativeContainer):
 
     Attributes:
         config: The core configuration.
-
+        logging: Logging configuration.
     """
 
     config = providers.Configuration()
