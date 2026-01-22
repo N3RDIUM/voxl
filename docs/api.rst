@@ -49,3 +49,9 @@ Renderer
 .. automodule:: voxl.core.renderer
     :members:
 
+Compute manager
+---------------
+
+.. automodule:: voxl.core.compute
+    :members:
+
