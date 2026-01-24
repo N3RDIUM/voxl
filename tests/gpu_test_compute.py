@@ -41,5 +41,7 @@ class TestCompute(unittest.TestCase):
         manager.compute_pass()
 
         result = manager.readback(buffer=buffer, nbytes=data.nbytes, dtype="f")
+        print(data)
+        print(result)
 
         self.assertEqual(list(result), list(expected_result))

@@ -6,6 +6,7 @@ handles program startup and post-termination cleanups.
 
 from dependency_injector.wiring import Provide, inject
 
+from voxl.core.asset_manager import AssetManager
 from voxl.core.compute import ComputeManager
 from voxl.core.windowing.headless import Window
 from voxl.core.renderer.renderer import Renderer
@@ -14,6 +15,7 @@ from voxl.di_containers import Voxl
 
 @inject
 def main(
+    asset_manager: AssetManager = Provide[Voxl.core.asset_manager],
     compute_manager: ComputeManager = Provide[Voxl.compute_manager],
     renderer: Renderer = Provide[Voxl.renderer],
     window: Window = Provide[Voxl.window],
@@ -22,6 +24,8 @@ def main(
 
     Starts the application mainloop and handles after-close cleanup.
     """
+
+    asset_manager.load_assets("./assets/", "voxl_")
     _ = renderer, compute_manager
 
     try:
