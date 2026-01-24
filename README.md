@@ -1,6 +1,14 @@
 # Voxl
 A highly optimized procedural voxel engine written from scratch in Python.
 
+## Roadmap
+- [ ] CPU-side procedural chunk generation using pyfastnoisesimd.
+- [ ] GPU-side greedy meshing.
+- [ ] Improve terrain generation, make it more interesting.
+- [ ] Break/place blocks
+- [ ] Player physics
+- [ ] Block shading / proper shaders / skybox / sun / moon / stars / volumetric
+
 ## Usage
 
 Install the [Nix](https://nixos.org/) Package Manager:
