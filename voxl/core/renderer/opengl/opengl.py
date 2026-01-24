@@ -13,7 +13,7 @@ from voxl.constants import (
     WINDOW_BACKEND_GLFW,
     WINDOW_BACKEND_HEADLESS,
 )
-from .renderer import Renderer, RendererConfig
+from voxl.core.renderer.renderer import Renderer, RendererConfig
 from voxl.core.windowing.headless import Window
 
 

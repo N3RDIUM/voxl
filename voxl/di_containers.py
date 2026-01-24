@@ -1,7 +1,5 @@
 """Dependency Injection Containers.
 
-This project takes extensibility seriously. That's why.
-
 Todo:
     * Error handling for the backend selectors
 """
