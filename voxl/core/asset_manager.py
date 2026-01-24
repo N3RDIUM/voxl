@@ -76,7 +76,8 @@ class AssetManager:
 
         self.logger.info(f"\tAsset load took {perf_counter() - t0} sec")
 
-    def get_shader_program(self, name: str) -> dict[str, str] | None:
+    def get_shader(self, name: str) -> dict[str, str]:
+        # TODO TypedDict ShaderCode
         if name not in self.shaders:
             raise Exception(
                 f"Tried to get shader {name},"

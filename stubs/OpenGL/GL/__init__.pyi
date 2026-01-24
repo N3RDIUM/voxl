@@ -1,4 +1,5 @@
 import ctypes
+from OpenGL.GL.shaders import ShaderProgram
 import numpy as np
 
 GL_TRUE: int
@@ -9,6 +10,8 @@ GL_STATIC_DRAW: int
 GL_FLOAT: int
 GL_UNSIGNED_INT: int
 GL_TRIANGLES: int
+GL_FRAGMENT_SHADER: int
+GL_VERTEX_SHADER: int
 
 def glViewport(x: int, y: int, width: int, height: int) -> None: ...
 def glClearColor(r: int, g: int, b: int, a: int) -> None: ...
@@ -37,3 +40,4 @@ def glVertexAttribDivisor(index: int, divisor: int) -> None: ...
 def glDrawArraysInstanced(
     mode: int, first: int, count: int, instancecount: int
 ) -> None: ...
+def glUseProgram(program: ShaderProgram) -> None: ...
