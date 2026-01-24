@@ -10,5 +10,5 @@ __all__ = [
     "OpenGLConfig",
     "Buffer",
     "QuadMesh",
-    "OpenGLShader"
+    "OpenGLShader",
 ]
