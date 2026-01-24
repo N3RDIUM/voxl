@@ -2,7 +2,7 @@
 
 from typing import Literal
 from enum import Enum
-from wgpu import GPUBuffer
+from wgpu.classes import GPUBuffer
 
 # core.windowing
 type WindowBackend = Literal["headless", "glfw"]

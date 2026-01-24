@@ -37,7 +37,10 @@ class Window:
         self.config: WindowConfig = config
         self.logger: Logger = getLogger("Window")
 
+        # pre-drawcall hooks
         self._drawcall_hooks: dict[str, CallableHook] = {}
+        # post-drawcall hooks
+        # update/tick hooks in the bg thread (TODO make the sharedcon/bg thread)
 
         if not config.get("backend"):
             self.logger.warning(

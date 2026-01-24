@@ -20,6 +20,7 @@ from wgpu.classes import (
     GPUShaderModule,
 )
 from wgpu.structs import BindGroupEntry
+from wgpu.flags import BufferUsage
 
 
 class ComputeManagerConfig(TypedDict):
@@ -28,12 +29,19 @@ class ComputeManagerConfig(TypedDict):
     power_preference: str
 
 
+class DispatchDict(TypedDict):
+    pipeline: ComputePipeline
+    bindings: ComputeBindings
+    n_workgroups: tuple[int, int, int]
+
+
 class ComputeManager:
     """Minimal wgpu compute manager."""
 
     config: ComputeManagerConfig
     adapter: GPUAdapter
     device: GPUDevice
+    dispatch_queue: list[DispatchDict]
 
     def __init__(self, config: ComputeManagerConfig) -> None:
         """Initialize the compute manager."""
@@ -66,13 +74,20 @@ class ComputeManager:
         pass_encoder = encoder.begin_compute_pass()
 
         for item in self.dispatch_queue:
-            pipeline, kwargs = item
-            pipeline.dispatch(pass_encoder, **kwargs)
+            pipeline = item["pipeline"]
+            bindings = item["bindings"]
+            n_workgroups = item["n_workgroups"]
+            pipeline.dispatch(pass_encoder, bindings, n_workgroups)
 
         pass_encoder.end()
         self.device.queue.submit([encoder.finish()])
 
-    def enqueue(self, pipeline, **kwargs) -> None:
+    def enqueue(
+        self,
+        pipeline: ComputePipeline,
+        bindings: ComputeBindings,
+        n_workgroups: tuple[int, int, int],
+    ) -> None:
         """Enqueue a compute task.
 
         Stores the kwargs (apart from pipeline) in the dispatch queue. The
@@ -86,14 +101,20 @@ class ComputeManager:
             n_workgroups: number of workgroups to dispatch.
         """
 
-        self.dispatch_queue.append((pipeline, kwargs))
+        self.dispatch_queue.append(
+            {
+                "pipeline": pipeline,
+                "bindings": bindings,
+                "n_workgroups": n_workgroups,
+            }
+        )
 
     def buffer_from_np(
         self,
         data: np.ndarray,
-        usage: int = wgpu.BufferUsage.STORAGE
-        | wgpu.BufferUsage.COPY_SRC
-        | wgpu.BufferUsage.COPY_DST,
+        usage: int = BufferUsage.STORAGE
+        | BufferUsage.COPY_SRC
+        | BufferUsage.COPY_DST,
     ) -> GPUBuffer:
         """Create a GPUBuffer from a given numpy array."""
 
@@ -108,7 +129,7 @@ class ComputeManager:
 
         readback_buffer = self.device.create_buffer(
             size=nbytes,
-            usage=wgpu.BufferUsage.COPY_DST | wgpu.BufferUsage.MAP_READ,
+            usage=BufferUsage.COPY_DST | BufferUsage.MAP_READ,
         )
 
         encoder = self.device.create_command_encoder()
@@ -116,7 +137,7 @@ class ComputeManager:
         self.device.queue.submit([encoder.finish()])
 
         result = self.device.queue.read_buffer(buffer)
-        return np.array(result.cast(dtype))
+        return np.frombuffer(result, dtype=dtype)
 
 
 class ComputePipeline:
@@ -208,9 +229,6 @@ class ComputePipeline:
             pass_encoder.set_bind_group(
                 group_idx,
                 bind_groups[group_idx],
-                dynamic_offsets_data=[],
-                dynamic_offsets_data_start=0,
-                dynamic_offsets_data_length=999999,  # todo what?!
             )
 
         pass_encoder.dispatch_workgroups(*n_workgroups)
