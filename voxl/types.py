@@ -14,7 +14,16 @@ type RenderBackend = Literal["none", "opengl"]
 
 # core.renderer.quad
 class Orientation(Enum):
-    """Enum for the orientation of a quad in 3d space."""
+    """Enum for the orientation of a quad in 3d space.
+
+    Attributes:
+        TOP
+        BOTTOM
+        LEFT
+        RIGHT
+        FRONT
+        BACK
+    """
 
     TOP = 0
     BOTTOM = 1
