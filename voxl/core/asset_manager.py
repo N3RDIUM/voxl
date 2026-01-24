@@ -74,7 +74,7 @@ class AssetManager:
 
             self.shaders[prefix + name] = {"vert": vert, "frag": frag}
 
-        self.logger.info(f"\tAsset load took {perf_counter() - t0}s")
+        self.logger.info(f"\tAsset load took {perf_counter() - t0} sec")
 
     def get_shader_program(self, name: str) -> dict[str, str] | None:
         if name not in self.shaders:
