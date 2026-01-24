@@ -1,4 +1,4 @@
-""" """
+"""The OpenGL-based renderer."""
 
 from .opengl import OpenGLRenderer, OpenGLConfig
 from .buffer import Buffer
