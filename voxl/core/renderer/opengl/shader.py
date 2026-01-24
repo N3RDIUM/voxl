@@ -37,13 +37,13 @@ class OpenGLShader:
             frag = compileShader(frag_src, GL_FRAGMENT_SHADER)
             program = compileProgram(vert, frag)
         except ShaderCompilationError as e:
-            raise Exception(f"Could not compile shader {self.name}: {e}")
+            raise RuntimeError(f"Could not compile shader {self.name}: {e}")
 
         self.program = program
 
     def use(self) -> None:
         if self.program is None:
-            raise Exception(
+            raise RuntimeError(
                 f"Tried to use shader {self.name} before compilation"
             )
 
