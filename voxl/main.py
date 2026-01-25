@@ -15,7 +15,7 @@ from voxl.di_containers import Voxl
 
 @inject
 def main(
-    asset_manager: AssetManager = Provide[Voxl.core.asset_manager],
+    asset_manager: AssetManager = Provide[Voxl.core.asset_manager],  # pyright:ignore[reportUnknownMemberType]
     compute_manager: ComputeManager = Provide[Voxl.compute_manager],
     renderer: Renderer = Provide[Voxl.renderer],
     window: Window = Provide[Voxl.window],

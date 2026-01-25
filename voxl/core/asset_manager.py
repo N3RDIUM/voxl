@@ -18,6 +18,9 @@ from typing import TypedDict
 
 class AssetManagerConfig(TypedDict):
     """Asset manager config TypedDict."""
+    ...
+
+default_config: AssetManagerConfig = {}
 
 
 class AssetManager:
@@ -25,9 +28,13 @@ class AssetManager:
     config: AssetManagerConfig
     logger: logging.Logger
 
-    def __init__(self, config: AssetManagerConfig) -> None:
+    def __init__(self, config: AssetManagerConfig | None) -> None:
         self.shaders = {}
+
+        if config is None:
+            config = default_config
         self.config = config
+
         self.logger = logging.getLogger("AssetManager")
 
     def load_assets(self, asset_dir: str, prefix: str) -> None:

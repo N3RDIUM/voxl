@@ -10,3 +10,8 @@ SAMPLES: int = 1
 
 # ComputeManagerConfig
 POWER_PREFERENCE: str = "high-performance"
+
+# CameraConfig
+DEFAULT_FOV: float = 45.0
+DEFAULT_FAR: float = 1.0
+DEFAULT_NEAR: float = 1_000_000_000.0
