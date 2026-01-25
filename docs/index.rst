@@ -17,7 +17,7 @@ Get started with the `Usage Guide`_.
 .. _Usage Guide: https://github.com/N3RDIUM/voxl/?tab=readme-ov-file#usage
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    api

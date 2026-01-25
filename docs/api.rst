@@ -38,20 +38,14 @@ Core Package
     :members:
 
 Windowing System
-----------------
+~~~~~~~~~~~~~~~~
 
 .. automodule:: voxl.core.windowing
     :members:
 
 Renderer
---------
+~~~~~~~~
 
 .. automodule:: voxl.core.renderer
-    :members:
-
-Compute manager
----------------
-
-.. automodule:: voxl.core.compute
     :members:
 
