@@ -24,6 +24,7 @@ mkShell {
     # Necessary dependencies
     python314
     python314Packages.pyglm
+    python314Packages.cython
     python314Packages.numpy
     python314Packages.pillow
     python314Packages.pyzmq
