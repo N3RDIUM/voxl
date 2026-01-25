@@ -18,7 +18,9 @@ from typing import TypedDict
 
 class AssetManagerConfig(TypedDict):
     """Asset manager config TypedDict."""
+
     ...
+
 
 default_config: AssetManagerConfig = {}
 

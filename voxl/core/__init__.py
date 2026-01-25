@@ -11,4 +11,11 @@ from . import renderer
 from . import asset_manager
 from . import camera
 
-__all__ = ["Core", "compute", "windowing", "renderer", "asset_manager", "camera"]
+__all__ = [
+    "Core",
+    "compute",
+    "windowing",
+    "renderer",
+    "asset_manager",
+    "camera",
+]
