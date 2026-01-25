@@ -6,8 +6,8 @@ handles program startup and post-termination cleanups.
 
 from dependency_injector.wiring import Provide, inject
 
-from voxl.core.asset_manager import AssetManager
-from voxl.core.compute import ComputeManager
+from voxl.core import AssetManager
+from voxl.core import ComputeManager
 from voxl.core.windowing.headless import Window
 from voxl.core.renderer.renderer import Renderer
 from voxl.di_containers import Voxl
