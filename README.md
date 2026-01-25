@@ -2,7 +2,7 @@
 A highly optimized procedural voxel engine written from scratch in Python.
 
 ## Roadmap
-- [ ] CPU-side procedural chunk generation using pyfastnoisesimd.
+- [ ] CPU-side procedural chunk generation using pyfastnoisesimd/cython.
 - [ ] GPU-side greedy meshing.
 - [ ] Improve terrain generation, make it more interesting.
 - [ ] Break/place blocks
