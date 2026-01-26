@@ -67,8 +67,8 @@ class Camera:
         projection = glm.perspective(
             self.config.get("fov", DEFAULT_FOV),
             aspect,
-            self.config.get("near", DEFAULT_NEAR),
             self.config.get("far", DEFAULT_FAR),
+            self.config.get("near", DEFAULT_NEAR),
         )
 
         return matrix, projection
