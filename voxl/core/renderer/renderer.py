@@ -1,6 +1,7 @@
 from typing import TypedDict
 from logging import Logger, getLogger
 
+from voxl.core import AssetManager, Camera
 from voxl.types import RenderBackend as RenderBackedType
 from voxl.constants import RENDER_BACKEND_NONE
 from voxl.core.windowing.headless import Window
@@ -27,10 +28,24 @@ class Renderer:
         logger (Logger): Logger instance
     """
 
-    def __init__(self, config: RendererConfig, window: Window) -> None:
-        self.config: RendererConfig = config
-        self.window: Window = window
-        self.logger: Logger = getLogger("Renderer")
+    config: RendererConfig
+    window: Window
+    asset_manager: AssetManager
+    camera: Camera
+    logger: Logger
+
+    def __init__(
+        self,
+        config: RendererConfig,
+        window: Window,
+        asset_manager: AssetManager,
+        camera: Camera,
+    ) -> None:
+        self.config = config
+        self.window = window
+        self.asset_manager = asset_manager
+        self.camera = camera
+        self.logger = getLogger("Renderer")
 
         if not config.get("backend"):
             self.logger.warning(
@@ -46,3 +61,11 @@ class Renderer:
     def render(self, dt: float) -> None:
         """Does nothing."""
         _ = dt
+
+    def request_quad_mesh(self, uid: str) -> None:  # -> quadmesh base, actually
+        """Request the creation of a quad mesh."""
+
+        # TODO: the OpenGLQuadMesh should inherit from the QuadMesh in core.scene
+
+        _ = uid
+        raise NotImplementedError

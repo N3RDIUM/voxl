@@ -9,6 +9,7 @@ Todo:
     * Implement image asset loading capabilities
 """
 
+from collections.abc import Callable
 import logging
 
 import os
@@ -27,17 +28,26 @@ default_config: AssetManagerConfig = {}
 
 class AssetManager:
     shaders: dict[str, dict[str, str]]
+    hooks: dict[str, dict[str, Callable[[], None]]]
     config: AssetManagerConfig
     logger: logging.Logger
 
     def __init__(self, config: AssetManagerConfig | None) -> None:
         self.shaders = {}
+        self.hooks = {}
 
         if config is None:
             config = default_config
         self.config = config
 
         self.logger = logging.getLogger("AssetManager")
+
+    def register_hook(
+        self, name: str, prefix: str, hook: Callable[[], None]
+    ) -> None:
+        if not self.hooks.get(prefix):
+            self.hooks[prefix] = {}
+        self.hooks[prefix][name] = hook
 
     def load_assets(self, asset_dir: str, prefix: str) -> None:
         """Load assets from a given dir, assign IDs with the given prefix.
@@ -83,7 +93,13 @@ class AssetManager:
 
             self.shaders[prefix + name] = {"vert": vert, "frag": frag}
 
-        self.logger.info(f"\tAsset load took {perf_counter() - t0} sec")
+        self.logger.info(
+            f"\tAsset load {prefix} took {perf_counter() - t0} sec"
+        )
+        self.logger.info(f"\tProcessing hooks for {prefix}")
+
+        for name in self.hooks[prefix]:
+            self.hooks[prefix][name]()
 
     def get_shader(self, name: str) -> dict[str, str]:
         # TODO TypedDict ShaderCode

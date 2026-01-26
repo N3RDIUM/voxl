@@ -3,6 +3,7 @@ from dependency_injector import containers, providers
 import logging.config
 from .asset_manager import AssetManager
 from .camera import Camera
+from .compute import ComputeManager
 
 
 @final
@@ -31,3 +32,5 @@ class Core(containers.DeclarativeContainer):
         Camera,
         config=config.camera,
     )
+
+    compute_manager = providers.Resource(ComputeManager, config=config.compute)

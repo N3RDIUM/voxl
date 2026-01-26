@@ -8,7 +8,6 @@ from typing import final
 from dependency_injector import containers, providers
 
 from .core import windowing
-from .core import compute
 from .core import renderer
 from .core import Core
 
@@ -42,14 +41,14 @@ class Voxl(containers.DeclarativeContainer):
             renderer.Renderer,
             config=config.renderer,
             window=window,
+            asset_manager=core.asset_manager,  # pyright:ignore[reportUnknownMemberType]
+            camera=core.camera,  # pyright:ignore[reportUnknownMemberType]
         ),
         opengl=providers.ThreadLocalSingleton(  # opengl isnt thread-safe
             renderer.OpenGLRenderer,
             config=config.renderer,
             window=window,
+            asset_manager=core.asset_manager,  # pyright:ignore[reportUnknownMemberType]
+            camera=core.camera,  # pyright:ignore[reportUnknownMemberType]
         ),
-    )
-
-    compute_manager = providers.Resource(
-        compute.ComputeManager, config=config.compute
     )

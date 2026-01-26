@@ -1,6 +1,11 @@
 # Voxl
 A highly optimized procedural voxel engine written from scratch in Python.
 
+## TODOs
+- [ ] Scene graph handles quad meshes, the renderers follow them, instead of whatever we're doing right now.
+- [x] Make the renderers follow camera.py as well.
+- [ ] Player for camera controls.
+
 ## Roadmap
 - [ ] CPU-side procedural chunk generation using pyfastnoisesimd/cython.
 - [ ] GPU-side greedy meshing.

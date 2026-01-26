@@ -93,7 +93,7 @@ class QuadMesh:
 
         offset_pos: int = buffer.data.dtype.fields["position"][1]
         offset_ori: int = buffer.data.dtype.fields["orientation"][1]
-        offset_tex: int = buffer.data.dtype.fields["tex_id"][1]
+        offset_tex: int = buffer.data.dtype.fields["texture"][1]
         offset_wid: int = buffer.data.dtype.fields["width"][1]
         offset_hei: int = buffer.data.dtype.fields["height"][1]
 
