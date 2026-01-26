@@ -89,8 +89,8 @@ class QuadMesh:
         glBindBuffer(GL_ARRAY_BUFFER, buffer.buffer)
 
         stride = buffer.data.strides[0]
-        assert buffer.data.dtype.fields is not None
 
+        assert buffer.data.dtype.fields is not None
         offset_pos: int = buffer.data.dtype.fields["position"][1]
         offset_ori: int = buffer.data.dtype.fields["orientation"][1]
         offset_tex: int = buffer.data.dtype.fields["texture"][1]
