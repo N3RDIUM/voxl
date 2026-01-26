@@ -3,8 +3,8 @@ A highly optimized procedural voxel engine written from scratch in Python.
 
 ## TODOs
 - [ ] Scene graph handles quad meshes, the renderers follow them, instead of whatever we're doing right now.
-- [x] Make the renderers follow camera.py as well.
 - [ ] Player for camera controls.
+- [ ] Decide where to keep the server.
 
 ## Roadmap
 - [ ] CPU-side procedural chunk generation using pyfastnoisesimd/cython.
