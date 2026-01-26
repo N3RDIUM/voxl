@@ -1,5 +1,6 @@
 # Voxl
 A highly optimized procedural voxel engine written from scratch in Python.
+[screenshots](docs/screenshots/screenshots.md)
 
 ## TODOs
 - [ ] The event manager has been implemented, now to integrate it.
