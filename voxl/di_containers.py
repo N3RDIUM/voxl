@@ -31,24 +31,19 @@ class Voxl(containers.DeclarativeContainer):
         config.window.backend,  # todo error handling for unexpected backend str
         headless=providers.Singleton(windowing.Window, config=config.window),
         glfw=providers.ThreadLocalSingleton(  # glfw isnt thread-safe
-            windowing.GlfwWindow, config=config.window
+            windowing.GlfwWindow, config=config.window, core=core
         ),
     )
 
     renderer = providers.Selector(
         config.renderer.backend,
         none=providers.Singleton(
-            renderer.Renderer,
-            config=config.renderer,
-            window=window,
-            asset_manager=core.asset_manager,  # pyright:ignore[reportUnknownMemberType]
-            camera=core.camera,  # pyright:ignore[reportUnknownMemberType]
+            renderer.Renderer, config=config.renderer, window=window, core=core
         ),
         opengl=providers.ThreadLocalSingleton(  # opengl isnt thread-safe
             renderer.OpenGLRenderer,
             config=config.renderer,
             window=window,
-            asset_manager=core.asset_manager,  # pyright:ignore[reportUnknownMemberType]
-            camera=core.camera,  # pyright:ignore[reportUnknownMemberType]
+            core=core,
         ),
     )

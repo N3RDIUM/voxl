@@ -1,6 +1,8 @@
 from typing import override
 import glfw
 
+from voxl.core import Core
+from voxl.events import DrawCall
 from voxl.types import GlfwWindowPointer
 
 from .headless import Window, WindowConfig
@@ -47,7 +49,7 @@ class GlfwWindow(Window):
 
     window: GlfwWindowPointer
 
-    def __init__(self, config: WindowConfig) -> None:
+    def __init__(self, config: WindowConfig, core: Core) -> None:
         """Initialize the glfw window and configure it.
 
         This constructor is responsible for initializing the glfw backend,
@@ -55,7 +57,7 @@ class GlfwWindow(Window):
         configuration options in that order.
         """
 
-        super().__init__(config)
+        super().__init__(config, core)
         self.logger.info("Initializing glfw backend")
         assert config["backend"] == WINDOW_BACKEND_GLFW
         self.glfw_config: GlfwConfig = config.get("glfw", default_config)
@@ -97,7 +99,7 @@ class GlfwWindow(Window):
 
         self.logger.info("Starting mainloop")
         while not glfw.window_should_close(self.window):
-            self.call_hooks(0.0)
+            self.core.event_manager().emit(DrawCall(dt=0.0001))
 
             glfw.swap_buffers(self.window)
             glfw.poll_events()

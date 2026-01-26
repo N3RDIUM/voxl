@@ -15,7 +15,8 @@ from OpenGL.GL import (
     glDepthFunc,
 )
 
-from voxl.core import AssetManager, Camera
+from voxl.core import Core
+from voxl.events import DrawCall, AssetsLoaded
 from voxl.constants import (
     RENDER_BACKEND_OPENGL,
     WINDOW_BACKEND_GLFW,
@@ -66,16 +67,10 @@ class OpenGLRenderer(Renderer):
     opengl_config: OpenGLConfig
     quad_mesh_shader: OpenGLShader | None
 
-    def __init__(
-        self,
-        config: RendererConfig,
-        window: Window,
-        asset_manager: AssetManager,
-        camera: Camera,
-    ):
+    def __init__(self, config: RendererConfig, window: Window, core: Core):
         """Initialize OpenGL."""
 
-        super().__init__(config, window, asset_manager, camera)
+        super().__init__(config, window, core)
         self.logger.info("Initializing OpenGL render backend")
         self.opengl_config = config.get("opengl", default_config)
         self.quad_mesh_shader = None
@@ -96,15 +91,15 @@ class OpenGLRenderer(Renderer):
             data.append(random_quad())
         self.mesh.set_data(data)
 
-        # register hooks
-        asset_manager.register_hook(
-            "OpenGLLoadShaders", "voxl_", self.load_shaders
-        )
-        window.register_hook("OpenGLRender", self.render)
+        # register listener(s)
+        self.core.event_manager().listen(AssetsLoaded, self.load_shaders)
 
-    def load_shaders(self):
+    def load_shaders(self, event: AssetsLoaded) -> None:
+        if event.prefix != "voxl_":
+            return
+
         self.quad_mesh_shader = OpenGLShader(
-            "voxl_quad_mesh", self.asset_manager
+            "voxl_quad_mesh", self.core.asset_manager()
         )
         self.quad_mesh_shader.compile()
 
@@ -142,29 +137,30 @@ class OpenGLRenderer(Renderer):
         if self.quad_mesh_shader is None:
             return
 
-        view, projection = self.camera.generate_mvp(self.window.size)
+        view, projection = self.core.camera().generate_mvp(self.window.size)
         self.quad_mesh_shader.set_uniform("view", view)
         self.quad_mesh_shader.set_uniform("projection", projection)
 
     @override
-    def render(self, dt: float) -> None:
+    def render(self, event: DrawCall) -> None:
         """Render the scene using OpenGL.
 
         This function is passed to the window's drawcall hooks, and the window
         calls it every frame during the mainloop.
         """
+        _ = event.dt
 
         width, height = self.window.size
         glViewport(0, 0, width, height)
         glClearColor(1, 0, 1, 0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
+        if self.quad_mesh_shader is None:
+            return
+
         glEnable(GL_DEPTH_TEST)
         glDepthFunc(GL_LESS)
         glEnable(GL_DEPTH_CLAMP)
-
-        if self.quad_mesh_shader is None:
-            return
 
         self.quad_mesh_shader.use()
         self.set_shader_uniforms()
@@ -172,5 +168,3 @@ class OpenGLRenderer(Renderer):
 
         glDisable(GL_DEPTH_TEST)
         glDisable(GL_DEPTH_CLAMP)
-
-        _ = dt

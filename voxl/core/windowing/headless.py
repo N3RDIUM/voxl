@@ -1,6 +1,8 @@
 from typing import Callable, TypedDict
 from logging import Logger, getLogger
 
+from voxl.core import Core
+from voxl.events import DrawCall
 from voxl.types import WindowBackend as WindowBackendType
 from voxl.constants import WINDOW_BACKEND_HEADLESS
 
@@ -33,14 +35,10 @@ class Window:
         logger (Logger): Logger instance
     """
 
-    def __init__(self, config: WindowConfig):
+    def __init__(self, config: WindowConfig, core: Core):
         self.config: WindowConfig = config
+        self.core: Core = core
         self.logger: Logger = getLogger("Window")
-
-        # pre-drawcall hooks
-        self._drawcall_hooks: dict[str, CallableHook] = {}
-        # post-drawcall hooks
-        # update/tick hooks in the bg thread (TODO make the sharedcon/bg thread)
 
         if not config.get("backend"):
             self.logger.warning(
@@ -53,25 +51,10 @@ class Window:
                 "Running with a headless window. No window will be displayed."
             )
 
-    def register_hook(
-        self,
-        name: str,
-        hook: CallableHook,
-    ) -> None:
-        self.logger.debug(f"Registering hook {name} -> {hook}")
-        self._drawcall_hooks[name] = hook
-
-    def call_hooks(self, dt: float) -> None:
-        hooks = self._drawcall_hooks
-        for hook in hooks.values():
-            hook(dt)
-
     def mainloop(self) -> None:
         """A mainloop that does nothing. Forever. Until interrupted."""
-        dt = 0.0
-
         while True:
-            self.call_hooks(dt)
+            self.core.event_manager().emit(DrawCall(dt=0.0))
 
     @property
     def size(self) -> tuple[int, int]:

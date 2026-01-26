@@ -19,21 +19,22 @@ class Core(containers.DeclarativeContainer):
 
     config = providers.Configuration()
 
-    event_manager = providers.Resource(EventManager)
+    event_manager = providers.Singleton(EventManager)
 
     logging = providers.Resource(
         logging.config.dictConfig,
         config=config.logging,
     )
 
-    asset_manager = providers.Resource(
-        AssetManager,
-        config=config.asset_manager,
+    asset_manager = providers.Singleton(
+        AssetManager, config=config.asset_manager, event_manager=event_manager
     )
 
-    camera = providers.Resource(
+    camera = providers.Singleton(
         Camera,
         config=config.camera,
     )
 
-    compute_manager = providers.Resource(ComputeManager, config=config.compute)
+    compute_manager = providers.ThreadLocalSingleton(
+        ComputeManager, config=config.compute
+    )

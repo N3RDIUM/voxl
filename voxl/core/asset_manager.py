@@ -9,12 +9,13 @@ Todo:
     * Implement image asset loading capabilities
 """
 
-from collections.abc import Callable
 import logging
 
 import os
 from time import perf_counter
 from typing import TypedDict
+from voxl.events import AssetsLoaded
+from .event_manager import EventManager
 
 
 class AssetManagerConfig(TypedDict):
@@ -28,26 +29,21 @@ default_config: AssetManagerConfig = {}
 
 class AssetManager:
     shaders: dict[str, dict[str, str]]
-    hooks: dict[str, dict[str, Callable[[], None]]]
     config: AssetManagerConfig
     logger: logging.Logger
+    event_manager: EventManager
 
-    def __init__(self, config: AssetManagerConfig | None) -> None:
+    def __init__(
+        self, config: AssetManagerConfig | None, event_manager: EventManager
+    ) -> None:
         self.shaders = {}
-        self.hooks = {}
+        self.event_manager = event_manager
 
         if config is None:
             config = default_config
         self.config = config
 
         self.logger = logging.getLogger("AssetManager")
-
-    def register_hook(
-        self, name: str, prefix: str, hook: Callable[[], None]
-    ) -> None:
-        if not self.hooks.get(prefix):
-            self.hooks[prefix] = {}
-        self.hooks[prefix][name] = hook
 
     def load_assets(self, asset_dir: str, prefix: str) -> None:
         """Load assets from a given dir, assign IDs with the given prefix.
@@ -96,10 +92,7 @@ class AssetManager:
         self.logger.info(
             f"\tAsset load {prefix} took {perf_counter() - t0} sec"
         )
-        self.logger.info(f"\tProcessing hooks for {prefix}")
-
-        for name in self.hooks[prefix]:
-            self.hooks[prefix][name]()
+        self.event_manager.emit(AssetsLoaded(prefix=prefix))
 
     def get_shader(self, name: str) -> dict[str, str]:
         # TODO TypedDict ShaderCode
