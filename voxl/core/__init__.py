@@ -1,15 +1,14 @@
 """Core functionality
 
 This module provides core functionality: compute shaders, windowing, asset
-management, logging, rendering, and a simple camera/MVP.
+management, logging, evenr management, rendering, and a simple camera/MVP.
 """
 
 from .asset_manager import AssetManager, AssetManagerConfig
 from .camera import Camera, CameraConfig
 from .compute import ComputeManager, ComputePipeline, ComputeManagerConfig
 from .core import Core
-from . import windowing
-from . import renderer
+from .event_manager import EventManager, Event
 
 __all__ = [
     "AssetManager",
@@ -20,6 +19,6 @@ __all__ = [
     "ComputePipeline",
     "ComputeManagerConfig",
     "Core",
-    "windowing",
-    "renderer",
+    "EventManager",
+    "Event",
 ]

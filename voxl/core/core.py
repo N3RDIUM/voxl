@@ -4,6 +4,7 @@ import logging.config
 from .asset_manager import AssetManager
 from .camera import Camera
 from .compute import ComputeManager
+from .event_manager import EventManager
 
 
 @final
@@ -17,6 +18,8 @@ class Core(containers.DeclarativeContainer):
     """
 
     config = providers.Configuration()
+
+    event_manager = providers.Resource(EventManager)
 
     logging = providers.Resource(
         logging.config.dictConfig,

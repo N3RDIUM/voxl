@@ -26,7 +26,7 @@ from voxl.core.windowing.headless import Window
 from voxl.types import Orientation
 from .shader import OpenGLShader
 from .quad_mesh import QuadMesh
-from voxl.core.renderer.quad import Quad
+from voxl.core.scene import Quad
 import random
 
 
@@ -35,6 +35,29 @@ class OpenGLConfig(RendererConfig):
 
 
 default_config: OpenGLConfig = {"backend": RENDER_BACKEND_OPENGL}
+
+
+def random_quad() -> Quad:
+    return Quad(
+        position=(
+            random.randint(-42, 42),
+            random.randint(-42, 42),
+            random.randint(-42, 42),
+        ),
+        orientation=random.choice(
+            [
+                Orientation.TOP,
+                Orientation.BOTTOM,
+                Orientation.LEFT,
+                Orientation.RIGHT,
+                Orientation.FRONT,
+                Orientation.BACK,
+            ]
+        ),
+        width=1,
+        height=1,
+        texture=0,
+    )
 
 
 class OpenGLRenderer(Renderer):
@@ -68,30 +91,9 @@ class OpenGLRenderer(Renderer):
 
         # meshmeshmeshmeshmeshmeshmesh
         self.mesh: QuadMesh = QuadMesh()
-        data = []
+        data: list[Quad] = []
         for _ in range(16384):
-            data.append(
-                Quad(
-                    position=(
-                        random.randint(-42, 42),
-                        random.randint(-42, 42),
-                        random.randint(-42, 42),
-                    ),
-                    orientation=random.choice(
-                        [
-                            Orientation.TOP,
-                            Orientation.BOTTOM,
-                            Orientation.LEFT,
-                            Orientation.RIGHT,
-                            Orientation.FRONT,
-                            Orientation.BACK,
-                        ]
-                    ),
-                    width=1,
-                    height=1,
-                    texture=0,
-                )
-            )
+            data.append(random_quad())
         self.mesh.set_data(data)
 
         # register hooks

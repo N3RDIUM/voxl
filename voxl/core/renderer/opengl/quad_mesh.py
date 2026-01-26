@@ -2,7 +2,7 @@ import ctypes
 import numpy as np
 import numpy.typing as npt
 from .buffer import Buffer
-from voxl.core.renderer.quad import Quad
+from voxl.core.scene.quad import Quad
 
 from OpenGL.GL import (
     GL_ARRAY_BUFFER,

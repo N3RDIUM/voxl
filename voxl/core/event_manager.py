@@ -1,6 +1,36 @@
-# TODO all hooks managed by this guy.
-# impl an EventManager. it will have 'listen' and 'emit'
-# also a base Event (data?)class, which events (eg. MeshAdded, AssetLoaded) will inherit.
-# The event classes will be in a separate core/events.py file.
-# emit() will take these Event classes
-# listen(event: str (eg. "MeshAdded"), callback: Callable[[Event], None]) -> None
+from dataclasses import dataclass
+from typing import Callable
+
+
+@dataclass
+class Event:
+    """Base event dataclass that stores nothing."""
+
+
+class EventManager:
+    """Centralized handler for `emitters` and `listeners`, pipes `Event`s."""
+
+    listeners: dict[type[Event], list[Callable[[Event], None]]]
+
+    def __init__(self) -> None:
+        self.listeners = {}
+
+    def listen(
+        self, event_type: type[Event], callback: Callable[[Event], None]
+    ) -> None:
+        """Register an event listener with a callback"""
+
+        if self.listeners.get(event_type) is None:
+            self.listeners[event_type] = []
+        self.listeners[event_type].append(callback)
+
+    def emit(self, event: Event) -> None:
+        """Emit an event."""
+
+        event_type: type[Event] = type(event)
+        if self.listeners.get(event_type) is None:
+            return
+        callbacks = self.listeners[event_type]
+
+        for callback in callbacks:
+            callback(event)
