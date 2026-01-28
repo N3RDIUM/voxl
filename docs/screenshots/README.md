@@ -1,7 +1,7 @@
 # Screenshots
 Dated (DD/MM/YYYY) screenshots, last-come-first-serve. [Go back to the top-level README](../../README.md)
 
-![Scene graph implementation with face culling](./0_quad_render_test.png)
+![Scene graph implementation with face culling](./1_quad_graph_cull.png)
 
 28/01/2026: Not very visually different from the last screenshot, but this one
 is being rendered using a shiny new scene graph implementation. Also, less quads
