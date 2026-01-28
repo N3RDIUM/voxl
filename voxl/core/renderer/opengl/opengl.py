@@ -7,12 +7,15 @@ from OpenGL.GL import (
     GL_DEPTH_TEST,
     GL_LESS,
     GL_DEPTH_CLAMP,
+    GL_CULL_FACE,
+    GL_BACK,
     glViewport,
     glClearColor,
     glClear,
     glEnable,
     glDisable,
     glDepthFunc,
+    glCullFace,
 )
 
 from voxl.core import Core
@@ -152,6 +155,9 @@ class OpenGLRenderer(Renderer):
         glDepthFunc(GL_LESS)
         glEnable(GL_DEPTH_CLAMP)
 
+        glEnable(GL_CULL_FACE)
+        glCullFace(GL_BACK)
+
         self.quad_mesh_shader.use()
         self.set_shader_uniforms()
         for mesh in self.quad_meshes.values():
@@ -159,5 +165,6 @@ class OpenGLRenderer(Renderer):
                 continue
             mesh.render()
 
+        glDisable(GL_CULL_FACE)
         glDisable(GL_DEPTH_TEST)
         glDisable(GL_DEPTH_CLAMP)
