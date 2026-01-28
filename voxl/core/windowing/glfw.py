@@ -1,4 +1,5 @@
 from typing import override
+from time import perf_counter
 import glfw
 
 from voxl.core import Core
@@ -96,13 +97,17 @@ class GlfwWindow(Window):
         Currently only draws a black window, since the render backend isn't
         implemented yet.
         """
+        dt = 1 / 60
 
         self.logger.info("Starting mainloop")
         while not glfw.window_should_close(self.window):
-            self.core.event_manager().emit(DrawCall(dt=0.0001))
+            t0 = perf_counter()
+
+            self.core.event_manager().emit(DrawCall(dt=dt))
 
             glfw.swap_buffers(self.window)
             glfw.poll_events()
+            dt = perf_counter() - t0
 
         glfw.terminate()
         self.logger.info("Window closed")
