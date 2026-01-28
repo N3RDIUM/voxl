@@ -9,6 +9,7 @@ from dependency_injector import containers, providers
 
 from .core import windowing
 from .core import renderer
+from .core import scene
 from .core import Core
 
 
@@ -46,4 +47,9 @@ class Voxl(containers.DeclarativeContainer):
             window=window,
             core=core,
         ),
+    )
+
+    scene_graph = providers.Singleton(
+        scene.SceneGraph,
+        core=core
     )

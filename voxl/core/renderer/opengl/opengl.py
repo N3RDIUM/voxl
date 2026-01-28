@@ -16,7 +16,8 @@ from OpenGL.GL import (
 )
 
 from voxl.core import Core
-from voxl.events import DrawCall, AssetsLoaded
+from voxl.core.renderer.opengl.quad_mesh import OpenGLQuadMesh
+from voxl.events import DrawCall, AssetsLoaded, QuadMeshCreated
 from voxl.constants import (
     RENDER_BACKEND_OPENGL,
     WINDOW_BACKEND_GLFW,
@@ -24,11 +25,7 @@ from voxl.constants import (
 )
 from voxl.core.renderer.renderer import Renderer, RendererConfig
 from voxl.core.windowing.headless import Window
-from voxl.types import Orientation
 from .shader import OpenGLShader
-from .quad_mesh import QuadMesh
-from voxl.core.scene import Quad
-import random
 
 
 class OpenGLConfig(RendererConfig):
@@ -38,34 +35,12 @@ class OpenGLConfig(RendererConfig):
 default_config: OpenGLConfig = {"backend": RENDER_BACKEND_OPENGL}
 
 
-def random_quad() -> Quad:
-    return Quad(
-        position=(
-            random.randint(-42, 42),
-            random.randint(-42, 42),
-            random.randint(-42, 42),
-        ),
-        orientation=random.choice(
-            [
-                Orientation.TOP,
-                Orientation.BOTTOM,
-                Orientation.LEFT,
-                Orientation.RIGHT,
-                Orientation.FRONT,
-                Orientation.BACK,
-            ]
-        ),
-        width=1,
-        height=1,
-        texture=0,
-    )
-
-
 class OpenGLRenderer(Renderer):
     """The OpenGL render backend implementation."""
 
     opengl_config: OpenGLConfig
     quad_mesh_shader: OpenGLShader | None
+    quad_meshes: dict[str, OpenGLQuadMesh]
 
     def __init__(self, config: RendererConfig, window: Window, core: Core):
         """Initialize OpenGL."""
@@ -73,7 +48,10 @@ class OpenGLRenderer(Renderer):
         super().__init__(config, window, core)
         self.logger.info("Initializing OpenGL render backend")
         self.opengl_config = config.get("opengl", default_config)
+
+        # quad mesh related stuff
         self.quad_mesh_shader = None
+        self.quad_meshes = {}
 
         # window backend specific initialization
         window_backend = window.config.get("backend")
@@ -84,15 +62,10 @@ class OpenGLRenderer(Renderer):
         else:
             self.logger.warning(f"Unsupported window backend {window_backend}")
 
-        # meshmeshmeshmeshmeshmeshmesh
-        self.mesh: QuadMesh = QuadMesh()
-        data: list[Quad] = []
-        for _ in range(16384):
-            data.append(random_quad())
-        self.mesh.set_data(data)
-
         # register listener(s)
-        self.core.event_manager().listen(AssetsLoaded, self.load_shaders)
+        event_manager = self.core.event_manager()
+        event_manager.listen(AssetsLoaded, self.load_shaders)
+        event_manager.listen(QuadMeshCreated, self.on_new_quad_mesh)
 
     def load_shaders(self, event: AssetsLoaded) -> None:
         if event.prefix != "voxl_":
@@ -102,6 +75,10 @@ class OpenGLRenderer(Renderer):
             "voxl_quad_mesh", self.core.asset_manager()
         )
         self.quad_mesh_shader.compile()
+
+    def on_new_quad_mesh(self, event: QuadMeshCreated) -> None:
+        new_mesh = OpenGLQuadMesh()
+        self.quad_meshes[event.name] = new_mesh
 
     def _init_glfw(self):
         """Initialize OpenGL for the glfw backend.
@@ -164,7 +141,6 @@ class OpenGLRenderer(Renderer):
 
         self.quad_mesh_shader.use()
         self.set_shader_uniforms()
-        self.mesh.render()
 
         glDisable(GL_DEPTH_TEST)
         glDisable(GL_DEPTH_CLAMP)

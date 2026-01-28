@@ -1,8 +1,10 @@
 import ctypes
+from typing_extensions import override
 import numpy as np
 import numpy.typing as npt
 from .buffer import Buffer
 from voxl.core.scene.quad import Quad
+from voxl.core.scene.quad_mesh import QuadMesh
 
 from OpenGL.GL import (
     GL_ARRAY_BUFFER,
@@ -45,19 +47,25 @@ def quads_to_instances(quads: list[Quad]) -> np.ndarray:
     return instances
 
 
-class QuadMesh:
+class OpenGLQuadMesh(QuadMesh):
     """A drawable mesh of quads.
 
-    Handles mesh modification with double-buffering, as well as shaders,
-    binding, setting the necessary uniforms and rendering the mesh.
+    Handles mesh modification with double-buffering, as well as binding, setting
+    the necessary uniforms and rendering the mesh.
+
+    TODO: Each mesh has a unique ID. An OpenGLQuadMesh in the renderer
+    corresponds to a QuadMesh object. Then use the event pipeline to listen
+    for updates.
     """
 
     buffers: list[Buffer]
 
     def __init__(self) -> None:
+        super().__init__()
         self.buffers = []
 
-    def set_data(self, quads: list[Quad]) -> None:
+    @override
+    def set_data(self, data: list[Quad]) -> None:
         """Set the data used to render the mesh.
 
         Converts the given list of quads to instances using
@@ -69,7 +77,9 @@ class QuadMesh:
         scheduling system in the update function later.
         """
 
-        mesh_data = quads_to_instances(quads)
+        super().set_data(data)
+
+        mesh_data = quads_to_instances(data)
         newbuf = Buffer(mesh_data)
         newbuf.send_to_gpu()
         self.buffers.append(newbuf)
