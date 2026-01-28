@@ -49,7 +49,4 @@ class Voxl(containers.DeclarativeContainer):
         ),
     )
 
-    scene_graph = providers.Singleton(
-        scene.SceneGraph,
-        core=core
-    )
+    scene_graph = providers.Singleton(scene.SceneGraph, core=core)
