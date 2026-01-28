@@ -5,7 +5,7 @@ A highly optimized procedural voxel engine written from scratch in Python.
 ## TODOs
 - [x] The event manager has been implemented, now to integrate it.
 - [x] Scene graph handles quad meshes, the renderers follow them.
-- [ ] Write stubs, ensure type safety for the `pyglm` module.
+- [x] Write stubs, ensure type safety for the `pyglm` module.
 - [ ] Player for camera controls.
 - [ ] Decide where to keep the server.
 
