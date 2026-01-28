@@ -49,3 +49,9 @@ Renderer
 .. automodule:: voxl.core.renderer
     :members:
 
+Scene
+~~~~~
+
+.. automodule:: voxl.core.scene
+    :members:
+
