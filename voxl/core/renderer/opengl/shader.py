@@ -113,10 +113,8 @@ class OpenGLShader:
             glUniformMatrix4x2fv(location, 1, GL_FALSE, glm.value_ptr(value))
         elif isinstance(value, glm.mat3x4):
             glUniformMatrix3x4fv(location, 1, GL_FALSE, glm.value_ptr(value))
-        elif isinstance(value, glm.mat4x3):
-            glUniformMatrix4x3fv(location, 1, GL_FALSE, glm.value_ptr(value))
         else:
-            raise TypeError(f"Unsupported uniform type: {type(value)}")
+            glUniformMatrix4x3fv(location, 1, GL_FALSE, glm.value_ptr(value))
 
     def use(self) -> None:
         if self.program is None:
