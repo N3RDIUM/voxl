@@ -9,4 +9,10 @@ if [ $status -ne 0 ]; then
 fi
 
 ruff format
+status=$?
+
+if [ $status -ne 0 ]; then
+    echo "ruff format check failed, commit aborted"
+    exit 1
+fi
 
