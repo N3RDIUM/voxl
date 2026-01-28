@@ -28,6 +28,8 @@ class Voxl(containers.DeclarativeContainer):
 
     core = providers.Container(Core, config=config.core)
 
+    scene_graph = providers.Singleton(scene.SceneGraph, core=core)
+
     window = providers.Selector(
         config.window.backend,  # todo error handling for unexpected backend str
         headless=providers.Singleton(windowing.Window, config=config.window),
@@ -39,14 +41,17 @@ class Voxl(containers.DeclarativeContainer):
     renderer = providers.Selector(
         config.renderer.backend,
         none=providers.Singleton(
-            renderer.Renderer, config=config.renderer, window=window, core=core
+            renderer.Renderer,
+            config=config.renderer,
+            scene_graph=scene_graph,
+            window=window,
+            core=core,
         ),
         opengl=providers.ThreadLocalSingleton(  # opengl isnt thread-safe
             renderer.OpenGLRenderer,
             config=config.renderer,
             window=window,
+            scene_graph=scene_graph,
             core=core,
         ),
     )
-
-    scene_graph = providers.Singleton(scene.SceneGraph, core=core)

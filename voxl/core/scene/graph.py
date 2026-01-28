@@ -8,7 +8,7 @@ Todo:
 """
 
 from voxl.core.core import Core
-from voxl.events import QuadMeshCreated
+from voxl.events import QuadMeshCreated, QuadMeshUpdated
 from .quad_mesh import QuadMesh
 
 
@@ -26,10 +26,18 @@ class SceneGraph:
 
         if not create:
             raise RuntimeError(
-                "Requested a quad mesh {name} which doesn't exist!"
+                f"Requested a quad mesh '{name}' which doesn't exist!"
             )
 
         new_mesh: QuadMesh = QuadMesh()
         self.quad_meshes[name] = new_mesh
         self.core.event_manager().emit(QuadMeshCreated(name=name))
         return new_mesh
+
+    def update_quad_mesh(self, name: str):
+        if not self.quad_meshes.get(name):
+            raise RuntimeError(
+                f"Tried to update a quad mesh '{name}' which doesn't exist!"
+            )
+
+        self.core.event_manager().emit(QuadMeshUpdated(name=name))

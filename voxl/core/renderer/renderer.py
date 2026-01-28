@@ -2,6 +2,7 @@ from typing import TypedDict
 from logging import Logger, getLogger
 
 from voxl.core import Core
+from voxl.core.scene import SceneGraph
 from voxl.events import DrawCall
 from voxl.types import RenderBackend as RenderBackedType
 from voxl.constants import RENDER_BACKEND_NONE
@@ -31,14 +32,20 @@ class Renderer:
 
     config: RendererConfig
     window: Window
+    scene_graph: SceneGraph
     core: Core
     logger: Logger
 
     def __init__(
-        self, config: RendererConfig, window: Window, core: Core
+        self,
+        config: RendererConfig,
+        window: Window,
+        scene_graph: SceneGraph,
+        core: Core,
     ) -> None:
         self.config = config
         self.window = window
+        self.scene_graph = scene_graph
         self.core = core
         self.logger = getLogger("Renderer")
 

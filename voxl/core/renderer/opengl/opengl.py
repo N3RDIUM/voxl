@@ -17,7 +17,8 @@ from OpenGL.GL import (
 
 from voxl.core import Core
 from voxl.core.renderer.opengl.quad_mesh import OpenGLQuadMesh
-from voxl.events import DrawCall, AssetsLoaded, QuadMeshCreated
+from voxl.core.scene import SceneGraph
+from voxl.events import DrawCall, AssetsLoaded, QuadMeshCreated, QuadMeshUpdated
 from voxl.constants import (
     RENDER_BACKEND_OPENGL,
     WINDOW_BACKEND_GLFW,
@@ -42,10 +43,16 @@ class OpenGLRenderer(Renderer):
     quad_mesh_shader: OpenGLShader | None
     quad_meshes: dict[str, OpenGLQuadMesh]
 
-    def __init__(self, config: RendererConfig, window: Window, core: Core):
+    def __init__(
+        self,
+        config: RendererConfig,
+        window: Window,
+        scene_graph: SceneGraph,
+        core: Core,
+    ):
         """Initialize OpenGL."""
 
-        super().__init__(config, window, core)
+        super().__init__(config, window, scene_graph, core)
         self.logger.info("Initializing OpenGL render backend")
         self.opengl_config = config.get("opengl", default_config)
 
@@ -65,7 +72,8 @@ class OpenGLRenderer(Renderer):
         # register listener(s)
         event_manager = self.core.event_manager()
         event_manager.listen(AssetsLoaded, self.load_shaders)
-        event_manager.listen(QuadMeshCreated, self.on_new_quad_mesh)
+        event_manager.listen(QuadMeshCreated, self.on_create_quad_mesh)
+        event_manager.listen(QuadMeshUpdated, self.on_update_quad_mesh)
 
     def load_shaders(self, event: AssetsLoaded) -> None:
         if event.prefix != "voxl_":
@@ -76,9 +84,14 @@ class OpenGLRenderer(Renderer):
         )
         self.quad_mesh_shader.compile()
 
-    def on_new_quad_mesh(self, event: QuadMeshCreated) -> None:
+    def on_create_quad_mesh(self, event: QuadMeshCreated) -> None:
         new_mesh = OpenGLQuadMesh()
         self.quad_meshes[event.name] = new_mesh
+
+    def on_update_quad_mesh(self, event: QuadMeshUpdated) -> None:
+        updated_mesh = self.scene_graph.request_quad_mesh(event.name)
+        self.quad_meshes[event.name].visible = updated_mesh.visible
+        self.quad_meshes[event.name].set_data(updated_mesh.data)
 
     def _init_glfw(self):
         """Initialize OpenGL for the glfw backend.
@@ -141,6 +154,10 @@ class OpenGLRenderer(Renderer):
 
         self.quad_mesh_shader.use()
         self.set_shader_uniforms()
+        for mesh in self.quad_meshes.values():
+            if not mesh.visible:
+                continue
+            mesh.render()
 
         glDisable(GL_DEPTH_TEST)
         glDisable(GL_DEPTH_CLAMP)

@@ -16,3 +16,8 @@ class AssetsLoaded(Event):
 @dataclass
 class QuadMeshCreated(Event):
     name: str
+
+
+@dataclass
+class QuadMeshUpdated(Event):
+    name: str
