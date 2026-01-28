@@ -71,9 +71,9 @@ class OpenGLRenderer(Renderer):
 
         # register listener(s)
         event_manager = self.core.event_manager()
-        event_manager.listen(AssetsLoaded, self.load_shaders)
-        event_manager.listen(QuadMeshCreated, self.on_create_quad_mesh)
-        event_manager.listen(QuadMeshUpdated, self.on_update_quad_mesh)
+        event_manager.listen(AssetsLoaded, self.load_shaders)  # pyright:ignore[reportArgumentType]
+        event_manager.listen(QuadMeshCreated, self.on_create_quad_mesh)  # pyright:ignore[reportArgumentType]
+        event_manager.listen(QuadMeshUpdated, self.on_update_quad_mesh)  # pyright:ignore[reportArgumentType]
 
     def load_shaders(self, event: AssetsLoaded) -> None:
         if event.prefix != "voxl_":
