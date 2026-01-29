@@ -7,6 +7,7 @@ A highly optimized procedural voxel engine written from scratch in Python.
 - [x] Scene graph handles quad meshes, the renderers follow them.
 - [x] Write stubs, ensure type safety for the `pyglm` module.
 - [ ] Player for camera controls.
+- [ ] Asset manager: textures.
 - [ ] Decide where to keep the server.
 
 ## Roadmap

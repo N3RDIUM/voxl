@@ -77,7 +77,9 @@ class OpenGLQuadMesh(QuadMesh):
         scheduling system in the update function later.
         """
 
-        super().set_data(data)
+        # Don't do this, it'll duplicate the list of quads, and there's
+        # literally no need to do that at this point.
+        # super().set_data(data)
 
         mesh_data = quads_to_instances(data)
         newbuf = Buffer(mesh_data)
