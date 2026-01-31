@@ -1,6 +1,10 @@
 # Screenshots
 Dated (DD/MM/YYYY) screenshots, last-come-first-serve. [Go back to the top-level README](../../README.md)
 
+![First cube](./2_first_cube.png)
+
+31/01/2026: First cube, with a controllable player (FPS camera controls).
+
 ![Scene graph implementation with face culling](./1_quad_graph_cull.png)
 
 28/01/2026: Not very visually different from the last screenshot, but this one
