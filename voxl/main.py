@@ -48,9 +48,9 @@ def main(
     event_manager = (
         window.core.event_manager()
     )  # TODO: Maybe let the player handle these
-    event_manager.listen(KeyEvent, player.on_key)
-    event_manager.listen(MouseMoveEvent, player.on_mouse_move)
-    event_manager.listen(DrawCall, player.update)
+    event_manager.listen(KeyEvent, player.on_key)  # pyright:ignore[reportArgumentType]
+    event_manager.listen(MouseMoveEvent, player.on_mouse_move)  # pyright:ignore[reportArgumentType]
+    event_manager.listen(DrawCall, player.update)  # pyright:ignore[reportArgumentType]
 
     try:
         window.mainloop()

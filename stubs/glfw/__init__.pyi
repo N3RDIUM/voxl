@@ -132,6 +132,11 @@ KEY_RIGHT_ALT: int
 KEY_RIGHT_SUPER: int
 KEY_MENU: int
 
+# Cursor constants
+CURSOR: int
+CURSOR_DISABLED: int
+CURSOR_NORMAL: int
+
 type _GLFWwindowPointerT = int
 type _GLFWmonitorPointerT = int
 
@@ -154,4 +159,13 @@ def window_hint(hint: int, value: int) -> None: ...
 def set_key_callback(
     window: _GLFWwindowPointerT,
     callback: Callable[[int, int, int, int, int], None],
+) -> None: ...
+def set_cursor_pos_callback(
+    window: _GLFWwindowPointerT,
+    callback: Callable[[int, int, int], None],
+) -> None: ...
+def set_input_mode(
+    window: _GLFWwindowPointerT,
+    mode: int,
+    value: int,
 ) -> None: ...
