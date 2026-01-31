@@ -1,19 +1,27 @@
-from typing import override
 from time import perf_counter
+from typing import override
+
 import glfw
 
-from voxl.core import Core
-from voxl.events import DrawCall, KeyEvent, MouseMoveEvent
-from voxl.types import GlfwWindowPointer, KeyState
-from .headless import Window, WindowConfig
 from voxl.constants import WINDOW_BACKEND_GLFW
-from .glfw_keymap import get_key_name
+from voxl.core import Core
 from voxl.default_config import (
     ENABLE_VSYNC as DEFAULT_ENABLE_VSYNC,
-    WINDOW_WIDTH as DEFAULT_WIDTH,
-    WINDOW_HEIGHT as DEFAULT_HEIGHT,
+)
+from voxl.default_config import (
     SAMPLES as DEFAULT_SAMPLES,
 )
+from voxl.default_config import (
+    WINDOW_HEIGHT as DEFAULT_HEIGHT,
+)
+from voxl.default_config import (
+    WINDOW_WIDTH as DEFAULT_WIDTH,
+)
+from voxl.events import DrawCall, KeyEvent, MouseMoveEvent
+from voxl.types import GlfwWindowPointer, KeyState
+
+from .glfw_keymap import get_key_name
+from .headless import Window, WindowConfig
 
 
 class GlfwConfig(WindowConfig):

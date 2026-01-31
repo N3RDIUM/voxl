@@ -7,13 +7,13 @@ handles program startup and post-termination cleanups.
 from dependency_injector.wiring import Provide, inject
 
 from voxl.core import AssetManager
-from voxl.core.scene import Quad, QuadMesh, SceneGraph
-from voxl.terrain import cube
-from voxl.core.windowing.headless import Window
 from voxl.core.renderer.renderer import Renderer
+from voxl.core.scene import Quad, QuadMesh, SceneGraph
+from voxl.core.windowing.headless import Window
 from voxl.di_containers import Voxl
 from voxl.events import DrawCall, KeyEvent, MouseMoveEvent
 from voxl.player import Player
+from voxl.terrain import cube
 
 
 @inject

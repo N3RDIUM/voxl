@@ -2,12 +2,12 @@ import numpy as np
 from OpenGL.GL import (
     GL_ARRAY_BUFFER,
     GL_STATIC_DRAW,
-    glGenBuffers,
     glBindBuffer,
     glBufferData,
     glBufferSubData,
     glDeleteBuffers,
     glFlush,
+    glGenBuffers,
 )
 
 

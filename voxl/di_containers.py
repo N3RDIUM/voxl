@@ -5,12 +5,10 @@ Todo:
 """
 
 from typing import final
+
 from dependency_injector import containers, providers
 
-from .core import windowing
-from .core import renderer
-from .core import scene
-from .core import Core
+from .core import Core, renderer, scene, windowing
 
 
 @final

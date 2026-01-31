@@ -6,9 +6,9 @@ management, logging, evenr management, rendering, and a simple camera/MVP.
 
 from .asset_manager import AssetManager, AssetManagerConfig
 from .camera import Camera, CameraConfig
-from .compute import ComputeManager, ComputePipeline, ComputeManagerConfig
+from .compute import ComputeManager, ComputeManagerConfig, ComputePipeline
 from .core import Core
-from .event_manager import EventManager, Event
+from .event_manager import Event, EventManager
 
 __all__ = [
     "AssetManager",

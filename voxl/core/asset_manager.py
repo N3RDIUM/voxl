@@ -10,11 +10,12 @@ Todo:
 """
 
 import logging
-
 import os
 from time import perf_counter
 from typing import TypedDict
+
 from voxl.events import AssetsLoaded
+
 from .event_manager import EventManager
 
 

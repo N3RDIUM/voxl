@@ -4,8 +4,8 @@ This modules contains constants. Basically magic values but with names. At least
 they're not magic values.
 """
 
-from voxl.types import WindowBackend as WindowBackendType
 from voxl.types import RenderBackend as RenderBackendType
+from voxl.types import WindowBackend as WindowBackendType
 
 # Window backends
 WINDOW_BACKEND_HEADLESS: WindowBackendType = "headless"

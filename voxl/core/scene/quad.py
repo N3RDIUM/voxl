@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from voxl.types import Orientation
 
 

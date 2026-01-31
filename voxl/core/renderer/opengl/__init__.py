@@ -1,7 +1,7 @@
 """The OpenGL-based renderer."""
 
-from .opengl import OpenGLRenderer, OpenGLConfig
 from .buffer import Buffer
+from .opengl import OpenGLConfig, OpenGLRenderer
 from .quad_mesh import OpenGLQuadMesh
 from .shader import OpenGLShader
 

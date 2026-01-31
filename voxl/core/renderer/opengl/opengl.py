@@ -1,34 +1,36 @@
 import platform
 from typing import override
+
 from OpenGL.GL import (
+    GL_BACK,
     GL_COLOR_BUFFER_BIT,
+    GL_CULL_FACE,
     GL_DEPTH_BUFFER_BIT,
-    GL_TRUE,
+    GL_DEPTH_CLAMP,
     GL_DEPTH_TEST,
     GL_LESS,
-    GL_DEPTH_CLAMP,
-    GL_CULL_FACE,
-    GL_BACK,
-    glViewport,
-    glClearColor,
+    GL_TRUE,
     glClear,
-    glEnable,
-    glDisable,
-    glDepthFunc,
+    glClearColor,
     glCullFace,
+    glDepthFunc,
+    glDisable,
+    glEnable,
+    glViewport,
 )
 
-from voxl.core import Core
-from voxl.core.renderer.opengl.quad_mesh import OpenGLQuadMesh
-from voxl.core.scene import SceneGraph
-from voxl.events import DrawCall, AssetsLoaded, QuadMeshCreated, QuadMeshUpdated
 from voxl.constants import (
     RENDER_BACKEND_OPENGL,
     WINDOW_BACKEND_GLFW,
     WINDOW_BACKEND_HEADLESS,
 )
+from voxl.core import Core
+from voxl.core.renderer.opengl.quad_mesh import OpenGLQuadMesh
 from voxl.core.renderer.renderer import Renderer, RendererConfig
+from voxl.core.scene import SceneGraph
 from voxl.core.windowing.headless import Window
+from voxl.events import AssetsLoaded, DrawCall, QuadMeshCreated, QuadMeshUpdated
+
 from .shader import OpenGLShader
 
 

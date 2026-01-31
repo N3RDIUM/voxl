@@ -1,23 +1,25 @@
 import ctypes
-from typing_extensions import override
+
 import numpy as np
 import numpy.typing as npt
-from .buffer import Buffer
-from voxl.core.scene.quad import Quad
-from voxl.core.scene.quad_mesh import QuadMesh
-
 from OpenGL.GL import (
     GL_ARRAY_BUFFER,
     GL_FLOAT,
-    GL_UNSIGNED_INT,
     GL_TRIANGLES,
+    GL_UNSIGNED_INT,
     glBindBuffer,
-    glEnableVertexAttribArray,
-    glDrawArraysInstanced,
-    glVertexAttribPointer,
-    glVertexAttribDivisor,
     glDisableVertexAttribArray,
+    glDrawArraysInstanced,
+    glEnableVertexAttribArray,
+    glVertexAttribDivisor,
+    glVertexAttribPointer,
 )
+from typing_extensions import override
+
+from voxl.core.scene.quad import Quad
+from voxl.core.scene.quad_mesh import QuadMesh
+
+from .buffer import Buffer
 
 Instance = np.dtype(
     [

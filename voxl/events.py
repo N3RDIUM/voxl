@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from voxl.core.event_manager import Event
 from voxl.types import KeyState
 

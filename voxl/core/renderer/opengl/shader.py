@@ -1,8 +1,9 @@
-from pyglm import glm
+from logging import Logger, getLogger
+
 from OpenGL.GL import (
+    GL_FALSE,
     GL_FRAGMENT_SHADER,
     GL_VERTEX_SHADER,
-    GL_FALSE,
     glGetUniformLocation,
     glUniform1f,
     glUniform1i,
@@ -10,24 +11,25 @@ from OpenGL.GL import (
     glUniform3f,
     glUniform4f,
     glUniformMatrix2fv,
-    glUniformMatrix3fv,
-    glUniformMatrix4fv,
     glUniformMatrix2x3fv,
-    glUniformMatrix3x2fv,
     glUniformMatrix2x4fv,
-    glUniformMatrix4x2fv,
+    glUniformMatrix3fv,
+    glUniformMatrix3x2fv,
     glUniformMatrix3x4fv,
+    glUniformMatrix4fv,
+    glUniformMatrix4x2fv,
     glUniformMatrix4x3fv,
     glUseProgram,
 )
 from OpenGL.GL.shaders import (
+    ShaderCompilationError,
+    ShaderProgram,
     compileProgram,
     compileShader,
-    ShaderProgram,
-    ShaderCompilationError,
 )
+from pyglm import glm
+
 from voxl.core.asset_manager import AssetManager
-from logging import getLogger, Logger
 
 
 class OpenGLShader:

@@ -2,25 +2,26 @@
 
 # TODO improve docstrings in this file.
 
-from time import perf_counter
-import numpy as np
-from typing_extensions import TypedDict
 from logging import Logger, getLogger
-from voxl.types import ComputeBindings
-from voxl.default_config import POWER_PREFERENCE as DEFAULT_POWER_PREFERENCE
+from time import perf_counter
 
+import numpy as np
 import wgpu
+from typing_extensions import TypedDict
 from wgpu.classes import (
+    GPUAdapter,
     GPUBindGroup,
     GPUBuffer,
-    GPUAdapter,
     GPUComputePassEncoder,
     GPUComputePipeline,
     GPUDevice,
     GPUShaderModule,
 )
-from wgpu.structs import BindGroupEntry
 from wgpu.flags import BufferUsage
+from wgpu.structs import BindGroupEntry
+
+from voxl.default_config import POWER_PREFERENCE as DEFAULT_POWER_PREFERENCE
+from voxl.types import ComputeBindings
 
 
 class ComputeManagerConfig(TypedDict):

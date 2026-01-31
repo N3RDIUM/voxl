@@ -6,7 +6,7 @@ configuration file. For more windowing-related configuration options, see
 :py:class:`voxl.core.windowing.headless.WindowConfig`
 """
 
+from .glfw import GlfwConfig, GlfwWindow
 from .headless import Window, WindowConfig
-from .glfw import GlfwWindow, GlfwConfig
 
 __all__ = ["Window", "WindowConfig", "GlfwWindow", "GlfwConfig"]

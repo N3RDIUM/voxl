@@ -6,7 +6,7 @@ configuration file. For more windowing-related configuration options, see
 :py:class:`voxl.core.renderer.renderer.RendererConfig`.
 """
 
+from .opengl import OpenGLConfig, OpenGLRenderer
 from .renderer import Renderer, RendererConfig
-from .opengl import OpenGLRenderer, OpenGLConfig
 
 __all__ = ["Renderer", "RendererConfig", "OpenGLRenderer", "OpenGLConfig"]

@@ -1,6 +1,8 @@
-from typing import final
-from dependency_injector import containers, providers
 import logging.config
+from typing import final
+
+from dependency_injector import containers, providers
+
 from .asset_manager import AssetManager
 from .camera import Camera
 from .compute import ComputeManager

@@ -1,5 +1,6 @@
 from collections.abc import Sequence
 from typing import TypedDict
+
 from wgpu.enums import FeatureNameEnum
 from wgpu.structs import BindGroupEntry, QueueDescriptorStruct
 

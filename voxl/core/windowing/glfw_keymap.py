@@ -5,7 +5,6 @@ Seriously, who would waste their time writing this boring mess? I wouldn't.
 
 import glfw
 
-
 # GLFW key constants mapped to human-readable names
 KEYMAP = {
     # Printable keys

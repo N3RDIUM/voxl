@@ -1,6 +1,7 @@
 import unittest
 
 import numpy as np
+
 from voxl.core.compute import ComputeManager, ComputePipeline
 
 

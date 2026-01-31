@@ -1,4 +1,5 @@
 import math
+
 from voxl.core.windowing.headless import Window
 from voxl.events import DrawCall, KeyEvent, MouseMoveEvent
 from voxl.types import KeyState

@@ -1,12 +1,12 @@
-from typing import TypedDict
 from logging import Logger, getLogger
+from typing import TypedDict
 
+from voxl.constants import RENDER_BACKEND_NONE
 from voxl.core import Core
 from voxl.core.scene import SceneGraph
+from voxl.core.windowing.headless import Window
 from voxl.events import DrawCall
 from voxl.types import RenderBackend as RenderBackedType
-from voxl.constants import RENDER_BACKEND_NONE
-from voxl.core.windowing.headless import Window
 
 
 class RendererConfig(TypedDict):

@@ -1,7 +1,8 @@
 """Type alias declarations all go here."""
 
-from typing import Literal
 from enum import Enum
+from typing import Literal
+
 from wgpu.classes import GPUBuffer
 
 # core.windowing

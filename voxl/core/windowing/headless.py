@@ -1,10 +1,10 @@
-from typing import Callable, TypedDict
 from logging import Logger, getLogger
+from typing import Callable, TypedDict
 
+from voxl.constants import WINDOW_BACKEND_HEADLESS
 from voxl.core import Core
 from voxl.events import DrawCall
 from voxl.types import WindowBackend as WindowBackendType
-from voxl.constants import WINDOW_BACKEND_HEADLESS
 
 
 class WindowConfig(TypedDict):

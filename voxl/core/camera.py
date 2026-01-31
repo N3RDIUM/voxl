@@ -1,8 +1,10 @@
 """Simple camera/MVP helper."""
 
 from typing import TypedDict
+
 from pyglm import glm
-from voxl.default_config import DEFAULT_FOV, DEFAULT_NEAR, DEFAULT_FAR
+
+from voxl.default_config import DEFAULT_FAR, DEFAULT_FOV, DEFAULT_NEAR
 
 
 class CameraConfig(TypedDict):
