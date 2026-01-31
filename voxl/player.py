@@ -40,7 +40,7 @@ class Player:
 
         self.rotation = (
             max(-90, min(90, self.rotation[0] + dy)),
-            self.rotation[1] + dx,
+            (self.rotation[1] + dx) % 360,
             self.rotation[2],
         )
 
