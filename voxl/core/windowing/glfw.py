@@ -3,11 +3,11 @@ from time import perf_counter
 import glfw
 
 from voxl.core import Core
-from voxl.events import DrawCall
-from voxl.types import GlfwWindowPointer
-
+from voxl.events import DrawCall, KeyEvent, MouseMoveEvent
+from voxl.types import GlfwWindowPointer, KeyState
 from .headless import Window, WindowConfig
 from voxl.constants import WINDOW_BACKEND_GLFW
+from .glfw_keymap import get_key_name
 from voxl.default_config import (
     ENABLE_VSYNC as DEFAULT_ENABLE_VSYNC,
     WINDOW_WIDTH as DEFAULT_WIDTH,
@@ -87,8 +87,37 @@ class GlfwWindow(Window):
             glfw.SAMPLES, self.glfw_config.get("samples", DEFAULT_SAMPLES)
         )
 
-        # TODO key callbacks (keyboard handler?)
-        ...
+        # Key state handlers
+        glfw.set_key_callback(self.window, self.key_callback)
+        glfw.set_cursor_pos_callback(self.window, self.cursor_pos_callback)
+
+    def key_callback(
+        self,
+        window: GlfwWindowPointer,
+        key: int,
+        scancode: int,
+        action: int,
+        mods: int,
+    ) -> None:
+        _ = window, scancode, mods
+
+        state = KeyState.RELEASE
+        if action == glfw.PRESS:
+            state = KeyState.PRESS
+        elif action == glfw.RELEASE:
+            state = KeyState.RELEASE
+        elif action == glfw.REPEAT:
+            state = KeyState.REPEAT
+
+        self.core.event_manager().emit(
+            KeyEvent(key_name=get_key_name(key), state=state)
+        )
+
+    def cursor_pos_callback(
+        self, window: GlfwWindowPointer, xpos: int, ypos: int
+    ) -> None:
+        _ = window
+        self.core.event_manager().emit(MouseMoveEvent(x=xpos, y=ypos))
 
     @override
     def mainloop(self) -> None:
@@ -111,6 +140,16 @@ class GlfwWindow(Window):
 
         glfw.terminate()
         self.logger.info("Window closed")
+
+    @override
+    def request_mouse_lock(self, mode: bool) -> None:
+        super().request_mouse_lock(mode)
+
+        if mode:
+            glfw.set_input_mode(self.window, glfw.CURSOR, glfw.CURSOR_DISABLED)
+            return
+
+        glfw.set_input_mode(self.window, glfw.CURSOR, glfw.CURSOR_NORMAL)
 
     @property
     @override

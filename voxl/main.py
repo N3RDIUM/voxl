@@ -7,11 +7,13 @@ handles program startup and post-termination cleanups.
 from dependency_injector.wiring import Provide, inject
 
 from voxl.core import AssetManager
-from voxl.core.scene import QuadMesh, SceneGraph
+from voxl.core.scene import Quad, QuadMesh, SceneGraph
 from voxl.terrain import cube
 from voxl.core.windowing.headless import Window
 from voxl.core.renderer.renderer import Renderer
 from voxl.di_containers import Voxl
+from voxl.events import DrawCall, KeyEvent, MouseMoveEvent
+from voxl.player import Player
 
 
 @inject
@@ -30,11 +32,25 @@ def main(
     _ = renderer
 
     mesh: QuadMesh = scene_graph.request_quad_mesh("example", create=True)
+    data: list[Quad] = []
+    for x in range(16):
+        for y in range(16):
+            for z in range(16):
+                data.extend(cube((x, y, z - 12)))
+    mesh.set_data(data)
     mesh.visible = True
-    mesh.set_data(cube((0, 0, -4)))
 
     # changes to a quad mesh won't be reflected unless this is called:
     scene_graph.update_quad_mesh("example")
+
+    # player
+    player = Player(window)
+    event_manager = (
+        window.core.event_manager()
+    )  # TODO: Maybe let the player handle these
+    event_manager.listen(KeyEvent, player.on_key)
+    event_manager.listen(MouseMoveEvent, player.on_mouse_move)
+    event_manager.listen(DrawCall, player.update)
 
     try:
         window.mainloop()

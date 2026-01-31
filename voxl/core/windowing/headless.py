@@ -39,6 +39,7 @@ class Window:
         self.config: WindowConfig = config
         self.core: Core = core
         self.logger: Logger = getLogger("Window")
+        self.mouse_locked: bool = False
 
         if not config.get("backend"):
             self.logger.warning(
@@ -55,6 +56,15 @@ class Window:
         """A mainloop that does nothing. Forever. Until interrupted."""
         while True:
             self.core.event_manager().emit(DrawCall(dt=0.0))
+
+    def request_mouse_lock(self, mode: bool) -> None:
+        """Request the window to lock the mouse pointer.
+
+        Args:
+            mode: True is lock, False isn't.
+        """
+
+        self.mouse_locked = mode
 
     @property
     def size(self) -> tuple[int, int]:

@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from voxl.core.event_manager import Event
+from voxl.types import KeyState
 
 
 # TODO group these into separate sections, separate files if it gets really big
@@ -21,3 +22,15 @@ class QuadMeshCreated(Event):
 @dataclass
 class QuadMeshUpdated(Event):
     name: str
+
+
+@dataclass
+class KeyEvent(Event):
+    key_name: str
+    state: KeyState
+
+
+@dataclass
+class MouseMoveEvent(Event):
+    x: int
+    y: int

@@ -54,3 +54,10 @@ Example:
     }
 
 """
+
+
+# events
+class KeyState(Enum):
+    PRESS = 0
+    RELEASE = 1
+    REPEAT = 2
