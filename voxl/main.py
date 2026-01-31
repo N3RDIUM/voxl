@@ -4,6 +4,7 @@ Initializes everything, loads the configuration from `config.yml` in the cwd,
 handles program startup and post-termination cleanups.
 """
 
+import imgui
 from dependency_injector.wiring import Provide, inject
 
 from voxl.core import AssetManager
@@ -11,8 +12,19 @@ from voxl.core.renderer.renderer import Renderer
 from voxl.core.scene import Quad, QuadMesh, SceneGraph
 from voxl.core.windowing.headless import Window
 from voxl.di_containers import Voxl
+from voxl.events import DebugDrawCall
 from voxl.player import Player
 from voxl.terrain import cube
+
+
+def hello_imgui(event: DebugDrawCall):
+    _ = event
+
+    imgui.begin("Debug")
+    imgui.text("Hello from ImGui")
+    if imgui.button("Click me"):
+        print("button clicked")
+    imgui.end()
 
 
 @inject
@@ -40,6 +52,9 @@ def main(
 
     # player
     _ = Player(window)
+
+    # hud
+    window.core.event_manager().listen(DebugDrawCall, hello_imgui)
 
     try:
         window.mainloop()

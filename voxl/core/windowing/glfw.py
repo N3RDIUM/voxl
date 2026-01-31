@@ -2,6 +2,8 @@ from time import perf_counter
 from typing import override
 
 import glfw
+import imgui
+from imgui.integrations.glfw import GlfwRenderer
 
 from voxl.constants import WINDOW_BACKEND_GLFW
 from voxl.core import Core
@@ -17,10 +19,9 @@ from voxl.default_config import (
 from voxl.default_config import (
     WINDOW_WIDTH as DEFAULT_WIDTH,
 )
-from voxl.events import DrawCall, KeyEvent, MouseMoveEvent
+from voxl.events import DebugDrawCall, DrawCall, KeyEvent, MouseMoveEvent
 from voxl.types import GlfwWindowPointer, KeyState
 
-from .debug import Debug
 from .glfw_keymap import get_key_name
 from .headless import Window, WindowConfig
 
@@ -58,7 +59,6 @@ class GlfwWindow(Window):
     """
 
     window: GlfwWindowPointer
-    debug: Debug
 
     def __init__(self, config: WindowConfig, core: Core) -> None:
         """Initialize the glfw window and configure it.
@@ -88,7 +88,10 @@ class GlfwWindow(Window):
             glfw.terminate()
             raise Exception("Could not create glfw window")
         glfw.make_context_current(self.window)
-        self.debug = Debug(self.window)
+
+        # imgui context
+        imgui.create_context()
+        self.imgui_impl = GlfwRenderer(self.window)
 
         # Apply configuration options
         enable_vsync = self.glfw_config.get("vsync", DEFAULT_ENABLE_VSYNC)
@@ -145,7 +148,12 @@ class GlfwWindow(Window):
             glfw.poll_events()
 
             self.core.event_manager().emit(DrawCall(dt=dt))
-            self.debug.draw()
+
+            self.imgui_impl.process_inputs()
+            imgui.new_frame()
+            self.core.event_manager().emit(DebugDrawCall())
+            imgui.render()
+            self.imgui_impl.render(imgui.get_draw_data())
 
             glfw.swap_buffers(self.window)
             dt = perf_counter() - t0

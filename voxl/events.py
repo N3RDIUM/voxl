@@ -11,6 +11,10 @@ class DrawCall(Event):
 
 
 @dataclass
+class DebugDrawCall(Event): ...
+
+
+@dataclass
 class AssetsLoaded(Event):
     prefix: str
 
