@@ -11,7 +11,6 @@ from voxl.core.renderer.renderer import Renderer
 from voxl.core.scene import Quad, QuadMesh, SceneGraph
 from voxl.core.windowing.headless import Window
 from voxl.di_containers import Voxl
-from voxl.events import DrawCall, KeyEvent, MouseMoveEvent
 from voxl.player import Player
 from voxl.terrain import cube
 
@@ -32,11 +31,7 @@ def main(
     _ = renderer
 
     mesh: QuadMesh = scene_graph.request_quad_mesh("example", create=True)
-    data: list[Quad] = []
-    for x in range(16):
-        for y in range(16):
-            for z in range(16):
-                data.extend(cube((x, y, z - 12)))
+    data: list[Quad] = cube((0, 0, -8))
     mesh.set_data(data)
     mesh.visible = True
 
@@ -44,13 +39,7 @@ def main(
     scene_graph.update_quad_mesh("example")
 
     # player
-    player = Player(window)
-    event_manager = (
-        window.core.event_manager()
-    )  # TODO: Maybe let the player handle these
-    event_manager.listen(KeyEvent, player.on_key)  # pyright:ignore[reportArgumentType]
-    event_manager.listen(MouseMoveEvent, player.on_mouse_move)  # pyright:ignore[reportArgumentType]
-    event_manager.listen(DrawCall, player.update)  # pyright:ignore[reportArgumentType]
+    _ = Player(window)
 
     try:
         window.mainloop()

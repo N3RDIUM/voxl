@@ -1,5 +1,6 @@
 import math
 
+from voxl.core import EventManager
 from voxl.core.windowing.headless import Window
 from voxl.events import DrawCall, KeyEvent, MouseMoveEvent
 from voxl.types import KeyState
@@ -20,6 +21,11 @@ class Player:
         self.keys = {}
 
         window.request_mouse_lock(True)
+
+        event_manager: EventManager = window.core.event_manager()
+        event_manager.listen(KeyEvent, self.on_key)  # pyright:ignore[reportArgumentType]
+        event_manager.listen(MouseMoveEvent, self.on_mouse_move)  # pyright:ignore[reportArgumentType]
+        event_manager.listen(DrawCall, self.update)  # pyright:ignore[reportArgumentType]
 
     def on_key(self, event: KeyEvent) -> None:
         self.keys[event.key_name] = event.state != KeyState.RELEASE
