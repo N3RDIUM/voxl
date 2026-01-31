@@ -20,6 +20,7 @@ from voxl.default_config import (
 from voxl.events import DrawCall, KeyEvent, MouseMoveEvent
 from voxl.types import GlfwWindowPointer, KeyState
 
+from .debug import Debug
 from .glfw_keymap import get_key_name
 from .headless import Window, WindowConfig
 
@@ -57,6 +58,7 @@ class GlfwWindow(Window):
     """
 
     window: GlfwWindowPointer
+    debug: Debug
 
     def __init__(self, config: WindowConfig, core: Core) -> None:
         """Initialize the glfw window and configure it.
@@ -86,6 +88,7 @@ class GlfwWindow(Window):
             glfw.terminate()
             raise Exception("Could not create glfw window")
         glfw.make_context_current(self.window)
+        self.debug = Debug(self.window)
 
         # Apply configuration options
         enable_vsync = self.glfw_config.get("vsync", DEFAULT_ENABLE_VSYNC)
@@ -139,11 +142,12 @@ class GlfwWindow(Window):
         self.logger.info("Starting mainloop")
         while not glfw.window_should_close(self.window):
             t0 = perf_counter()
+            glfw.poll_events()
 
             self.core.event_manager().emit(DrawCall(dt=dt))
+            self.debug.draw()
 
             glfw.swap_buffers(self.window)
-            glfw.poll_events()
             dt = perf_counter() - t0
 
         glfw.terminate()

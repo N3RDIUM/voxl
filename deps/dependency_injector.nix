@@ -4,6 +4,7 @@
   buildPythonPackage,
   cython,
   setuptools,
+  typingextensions,
 }:
 
 buildPythonPackage rec {
@@ -22,6 +23,7 @@ buildPythonPackage rec {
   ];
   nativeBuildInputs = [
     cython
+    typingextensions
   ];
 
   doCheck = false;

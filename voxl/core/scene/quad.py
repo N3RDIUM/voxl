@@ -20,4 +20,4 @@ class Quad:
     orientation: Orientation
     width: float
     height: float
-    texture: int
+    texture: int  # TODO: make this a str, use named textures

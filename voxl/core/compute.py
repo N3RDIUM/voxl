@@ -2,6 +2,8 @@
 
 # TODO improve docstrings in this file.
 
+from __future__ import annotations
+
 from logging import Logger, getLogger
 from time import perf_counter
 
