@@ -142,3 +142,6 @@ src/logs
 # Ruff cache
 **/.ruff_cache/
 
+# imgui stuff
+**imgui.ini
+
