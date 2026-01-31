@@ -1,3 +1,4 @@
+import math
 from voxl.core.windowing.headless import Window
 from voxl.events import DrawCall, KeyEvent, MouseMoveEvent
 from voxl.types import KeyState
@@ -47,8 +48,6 @@ class Player:
         self.cursor_pos = (event.x, event.y)
 
     def update(self, event: DrawCall) -> None:
-        import math
-
         dt = event.dt
         speed = 5.0
 
