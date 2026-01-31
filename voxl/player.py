@@ -55,6 +55,9 @@ class Player:
         self.cursor_pos = (event.x, event.y)
 
     def update(self, event: DrawCall) -> None:
+        if not self.window.mouse_locked:
+            return
+
         dt = event.dt
         speed = 5.0
 
