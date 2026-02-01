@@ -19,6 +19,17 @@ GL_DEPTH_TEST: int
 GL_LESS: int
 GL_CULL_FACE: int
 GL_BACK: int
+GL_TEXTURE_2D_ARRAY: int
+GL_TEXTURE_MIN_FILTER: int
+GL_LINEAR_MIPMAP_LINEAR: int
+GL_TEXTURE_MAG_FILTER: int
+GL_NEAREST: int
+GL_TEXTURE_WRAP_S: int
+GL_TEXTURE_WRAP_T: int
+GL_REPEAT: int
+GL_RGBA8: int
+GL_RGBA: int
+GL_UNSIGNED_BYTE: int
 
 def glViewport(x: int, y: int, width: int, height: int) -> None: ...
 def glClearColor(r: int, g: int, b: int, a: int) -> None: ...
@@ -87,3 +98,17 @@ def glEnable(cap: int) -> None: ...
 def glDisable(cap: int) -> None: ...
 def glDepthFunc(func: int) -> None: ...
 def glCullFace(mode: int) -> None: ...
+def glGenTextures(size: int) -> int: ...  # TODO verify
+def glTexParameteri(target: int, pname: int, param: int) -> None: ...
+def glTexImage3D(
+    target: int,
+    level: int,
+    internalformat: int,
+    width: int,
+    height: int,
+    depth: int,
+    border: int,
+    format: int,
+    type: int,
+    data: np.ndarray,
+) -> None: ...

@@ -16,6 +16,8 @@ from OpenGL.GL import (
 )
 from typing_extensions import override
 
+from voxl.core import AssetManager
+from voxl.core.core import Core
 from voxl.core.scene.quad import Quad
 from voxl.core.scene.quad_mesh import QuadMesh
 
@@ -33,7 +35,9 @@ Instance = np.dtype(
 type InstanceArray = npt.NDArray[np.void]
 
 
-def quads_to_instances(quads: list[Quad]) -> np.ndarray:
+def quads_to_instances(
+    quads: list[Quad], asset_manager: AssetManager
+) -> np.ndarray:
     """Converts a given list of quads to an array of quad instance structs."""
 
     count = len(quads)
@@ -44,7 +48,7 @@ def quads_to_instances(quads: list[Quad]) -> np.ndarray:
         instances["orientation"][i] = np.uint32(q.orientation.value)
         instances["width"][i] = np.float32(q.width).view(np.uint32)
         instances["height"][i] = np.float32(q.height).view(np.uint32)
-        instances["texture"][i] = float(q.texture)
+        instances["texture"][i] = float(asset_manager.texture_index(q.texture))
 
     return instances
 
@@ -61,10 +65,12 @@ class OpenGLQuadMesh(QuadMesh):
     """
 
     buffers: list[Buffer]
+    core: Core
 
-    def __init__(self) -> None:
+    def __init__(self, core: Core) -> None:
         super().__init__()
         self.buffers = []
+        self.core = core
 
     @override
     def set_data(self, data: list[Quad]) -> None:
@@ -83,7 +89,8 @@ class OpenGLQuadMesh(QuadMesh):
         # literally no need to do that at this point.
         # super().set_data(data)
 
-        mesh_data = quads_to_instances(data)
+        # maybe make a texture_map dict instead of this.
+        mesh_data = quads_to_instances(data, self.core.asset_manager())
         newbuf = Buffer(mesh_data)
         newbuf.send_to_gpu()
         self.buffers.append(newbuf)

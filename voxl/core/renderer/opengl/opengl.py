@@ -1,6 +1,7 @@
 import platform
 from typing import override
 
+import numpy as np
 from OpenGL.GL import (
     GL_BACK,
     GL_COLOR_BUFFER_BIT,
@@ -9,13 +10,29 @@ from OpenGL.GL import (
     GL_DEPTH_CLAMP,
     GL_DEPTH_TEST,
     GL_LESS,
+    GL_LINEAR_MIPMAP_LINEAR,
+    GL_NEAREST,
+    GL_REPEAT,
+    GL_RGBA,
+    GL_RGBA8,
+    GL_TEXTURE_2D_ARRAY,
+    GL_TEXTURE_MAG_FILTER,
+    GL_TEXTURE_MIN_FILTER,
+    GL_TEXTURE_WRAP_S,
+    GL_TEXTURE_WRAP_T,
     GL_TRUE,
+    GL_UNSIGNED_BYTE,
+    glBindTexture,
     glClear,
     glClearColor,
     glCullFace,
     glDepthFunc,
     glDisable,
     glEnable,
+    glGenerateMipmap,
+    glGenTextures,
+    glTexImage3D,
+    glTexParameteri,
     glViewport,
 )
 
@@ -79,13 +96,44 @@ class OpenGLRenderer(Renderer):
         else:
             self.logger.warning(f"Unsupported window backend {window_backend}")
 
+        # texture index
+        self.texture: int = 0
+
         # register listener(s)
         event_manager = self.core.event_manager()
-        event_manager.listen(AssetsLoaded, self.load_shaders)  # pyright:ignore[reportArgumentType]
+        event_manager.listen(AssetsLoaded, self.load_assets)  # pyright:ignore[reportArgumentType]
         event_manager.listen(QuadMeshCreated, self.on_create_quad_mesh)  # pyright:ignore[reportArgumentType]
         event_manager.listen(QuadMeshUpdated, self.on_update_quad_mesh)  # pyright:ignore[reportArgumentType]
 
-    def load_shaders(self, event: AssetsLoaded) -> None:
+    def load_assets(self, event: AssetsLoaded) -> None:
+        textures: list[np.ndarray] = []
+        for name in self.core.asset_manager().textures:
+            tex_data = self.core.asset_manager().textures[name]
+            textures.append(tex_data)
+        layer_data = np.stack(textures, axis=0)
+
+        self.texture = glGenTextures(1)
+        glBindTexture(GL_TEXTURE_2D_ARRAY, self.texture)
+        glTexParameteri(
+            GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR
+        )
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT)
+        glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT)
+        glTexImage3D(
+            GL_TEXTURE_2D_ARRAY,
+            0,
+            GL_RGBA8,
+            100,
+            100,
+            len(textures),
+            0,
+            GL_RGBA,
+            GL_UNSIGNED_BYTE,
+            layer_data,
+        )
+        glGenerateMipmap(GL_TEXTURE_2D_ARRAY)
+
         if event.prefix != "voxl":
             return
 
@@ -95,13 +143,13 @@ class OpenGLRenderer(Renderer):
         self.quad_mesh_shader.compile()
 
     def on_create_quad_mesh(self, event: QuadMeshCreated) -> None:
-        new_mesh = OpenGLQuadMesh()
+        new_mesh = OpenGLQuadMesh(self.core)
         self.quad_meshes[event.name] = new_mesh
 
     def on_update_quad_mesh(self, event: QuadMeshUpdated) -> None:
         updated_mesh = self.scene_graph.request_quad_mesh(event.name)
         self.quad_meshes[event.name].visible = updated_mesh.visible
-        self.quad_meshes[event.name].set_data(updated_mesh.data)
+        self.quad_meshes[event.name].set_data(updated_mesh.data)  # pass texmap
 
     def _init_glfw(self):
         """Initialize OpenGL for the glfw backend.
@@ -165,6 +213,7 @@ class OpenGLRenderer(Renderer):
         glEnable(GL_CULL_FACE)
         glCullFace(GL_BACK)
 
+        glBindTexture(GL_TEXTURE_2D_ARRAY, self.texture)
         self.quad_mesh_shader.use()
         self.set_shader_uniforms()
         for mesh in self.quad_meshes.values():

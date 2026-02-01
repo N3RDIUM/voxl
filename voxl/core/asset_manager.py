@@ -55,9 +55,8 @@ class AssetManager:
     def load_assets(self, asset_dir: str, prefix: str) -> None:
         """Load assets from a given dir, assign IDs with the given prefix.
 
-        Currently loads all vertex and fragment shaders. Corresponding .vert and
-        .frag files must have the same name (without the extension, of course).
-        For example, foo.frag and foo.vert
+        Corresponding .vert and .frag files must have the same name (without the
+        extension, of course). For example, foo.frag and foo.vert
         """
 
         self.logger.info(f"Loading assets from {asset_dir} as {prefix}")
@@ -109,13 +108,19 @@ class AssetManager:
             self.logger.info(f"\t- {prefix}:{name}")
 
             fullpath = os.path.join(texture_dir, file)
-            texture = Image.open(fullpath)
-            self.textures[f"{prefix}:{name}"] = np.array(texture.getdata())
+            texture = Image.open(fullpath).convert("RGBA")
+            self.textures[f"{prefix}:{name}"] = np.array(texture)
 
         self.logger.info(
             f"\tAsset load {prefix} took {perf_counter() - t0} sec"
         )
         self.event_manager.emit(AssetsLoaded(prefix=prefix))
+
+    def texture_index(self, name: str) -> int:
+        if name not in self.textures:
+            raise RuntimeError(f"No such texture: {name}")
+
+        return list(self.textures.keys()).index(name)
 
     def get_shader(self, name: str) -> dict[str, str]:
         # TODO TypedDict ShaderCode
