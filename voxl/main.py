@@ -54,7 +54,7 @@ def main(
     _ = Player(window)
 
     # hud
-    window.core.event_manager().listen(DebugDrawCall, hello_imgui)
+    window.core.event_manager().listen(DebugDrawCall, hello_imgui) # pyright:ignore[reportArgumentType]
 
     try:
         window.mainloop()

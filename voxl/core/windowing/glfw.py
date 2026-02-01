@@ -91,7 +91,7 @@ class GlfwWindow(Window):
 
         # imgui context
         imgui.create_context()
-        self.imgui_impl = GlfwRenderer(self.window)
+        self.imgui_impl: GlfwRenderer = GlfwRenderer(self.window)
 
         # Apply configuration options
         enable_vsync = self.glfw_config.get("vsync", DEFAULT_ENABLE_VSYNC)
