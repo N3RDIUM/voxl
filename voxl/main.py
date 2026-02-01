@@ -39,7 +39,7 @@ def main(
     Starts the application mainloop and handles after-close cleanup.
     """
 
-    asset_manager.load_assets("./assets/", "voxl_")
+    asset_manager.load_assets("./assets/", "voxl")
     _ = renderer
 
     mesh: QuadMesh = scene_graph.request_quad_mesh("example", create=True)

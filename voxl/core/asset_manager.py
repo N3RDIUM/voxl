@@ -14,7 +14,10 @@ import os
 from time import perf_counter
 from typing import TypedDict
 
+from PIL import Image
+import numpy as np
 from voxl.core.events import AssetsLoaded
+from voxl.constants import TEXTURE_SUFFIX_WHITELIST
 
 from .event_manager import EventManager
 
@@ -30,6 +33,7 @@ default_config: AssetManagerConfig = {}
 
 class AssetManager:
     shaders: dict[str, dict[str, str]]
+    textures: dict[str, np.ndarray]
     config: AssetManagerConfig
     logger: logging.Logger
     event_manager: EventManager
@@ -38,6 +42,7 @@ class AssetManager:
         self, config: AssetManagerConfig | None, event_manager: EventManager
     ) -> None:
         self.shaders = {}
+        self.textures = {}
         self.event_manager = event_manager
 
         if config is None:
@@ -59,15 +64,16 @@ class AssetManager:
         t0 = perf_counter()
 
         shader_dir = os.path.join(asset_dir, "shaders/")
-        shader_pairs: set[str] = set()
+        texture_dir = os.path.join(asset_dir, "textures/")
 
         self.logger.info("\tLoading shaders")
+        shader_pairs: set[str] = set()
         for file in os.listdir(shader_dir):
             name = file.split(".")[0]
             shader_pairs.add(name)
 
         for name in shader_pairs:
-            self.logger.info(f"\t\t{prefix}{name}")
+            self.logger.info(f"\t- {prefix}:{name}")
 
             vert_path = os.path.join(shader_dir, name + ".vert")
             frag_path = os.path.join(shader_dir, name + ".frag")
@@ -88,7 +94,22 @@ class AssetManager:
                     f"Shader not found: {frag_path} required for {vert_path}"
                 )
 
-            self.shaders[prefix + name] = {"vert": vert, "frag": frag}
+            self.shaders[f"{prefix}:{name}"] = {"vert": vert, "frag": frag}
+
+        self.logger.info("\tLoading assets")
+        for file in os.listdir(texture_dir):
+            if "." not in file or file.startswith(".") or file.endswith("."):
+                continue
+
+            if file.split(".")[-1] not in TEXTURE_SUFFIX_WHITELIST:
+                continue
+
+            name = ".".join(file.split(".")[:-1])
+            self.logger.info(f"\t- {prefix}:{name}")
+
+            fullpath = os.path.join(texture_dir, file)
+            texture = Image.open(fullpath)
+            self.textures[f"{prefix}:{name}"] = np.array(texture.getdata())
 
         self.logger.info(
             f"\tAsset load {prefix} took {perf_counter() - t0} sec"

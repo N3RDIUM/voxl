@@ -86,11 +86,11 @@ class OpenGLRenderer(Renderer):
         event_manager.listen(QuadMeshUpdated, self.on_update_quad_mesh)  # pyright:ignore[reportArgumentType]
 
     def load_shaders(self, event: AssetsLoaded) -> None:
-        if event.prefix != "voxl_":
+        if event.prefix != "voxl":
             return
 
         self.quad_mesh_shader = OpenGLShader(
-            "voxl_quad_mesh", self.core.asset_manager()
+            "voxl:quad_mesh", self.core.asset_manager()
         )
         self.quad_mesh_shader.compile()
 

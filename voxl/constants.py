@@ -14,3 +14,6 @@ WINDOW_BACKEND_GLFW: WindowBackendType = "glfw"
 # Render backends
 RENDER_BACKEND_NONE: RenderBackendType = "none"
 RENDER_BACKEND_OPENGL: RenderBackendType = "opengl"
+
+# Asset manager
+TEXTURE_SUFFIX_WHITELIST: list[str] = ["jpg", "jpeg", "png", "bmp"]
