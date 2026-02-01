@@ -10,7 +10,7 @@ class Player:
     window: Window
     position: tuple[float, float, float]
     rotation: tuple[float, float, float]
-    cursor_pos: tuple[int, int]
+    cursor_pos: tuple[float, float]
     keys: dict[str, bool]
 
     def __init__(self, window: Window) -> None:
