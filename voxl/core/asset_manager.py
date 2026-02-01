@@ -14,10 +14,11 @@ import os
 from time import perf_counter
 from typing import TypedDict
 
-from PIL import Image
 import numpy as np
-from voxl.core.events import AssetsLoaded
+from PIL import Image
+
 from voxl.constants import TEXTURE_SUFFIX_WHITELIST
+from voxl.core.events import AssetsLoaded
 
 from .event_manager import EventManager
 
