@@ -1,6 +1,10 @@
 # Screenshots
 Dated (DD/MM/YYYY) screenshots, last-come-first-serve. [Go back to the top-level README](../../README.md)
 
+![Textured cube](./3_textured_cube.png)
+
+01/01/2026: First textured cube, plus imgui integration for debugging.
+
 ![First cube](./2_first_cube.png)
 
 31/01/2026: First cube, with a controllable player (FPS camera controls).
