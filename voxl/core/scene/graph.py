@@ -8,7 +8,7 @@ Todo:
 """
 
 from voxl.core.core import Core
-from voxl.events import QuadMeshCreated, QuadMeshUpdated
+from voxl.core.events import QuadMeshCreated, QuadMeshUpdated
 
 from .quad_mesh import QuadMesh
 

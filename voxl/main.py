@@ -8,11 +8,11 @@ import imgui
 from dependency_injector.wiring import Provide, inject
 
 from voxl.core import AssetManager
+from voxl.core.events import DebugDrawCall
 from voxl.core.renderer.renderer import Renderer
 from voxl.core.scene import Quad, QuadMesh, SceneGraph
 from voxl.core.windowing.headless import Window
 from voxl.di_containers import Voxl
-from voxl.events import DebugDrawCall
 from voxl.player import Player
 from voxl.terrain import cube
 

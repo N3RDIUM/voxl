@@ -7,6 +7,7 @@ from imgui.integrations.glfw import GlfwRenderer
 
 from voxl.constants import WINDOW_BACKEND_GLFW
 from voxl.core import Core
+from voxl.core.events import DebugDrawCall, DrawCall, KeyEvent, MouseMoveEvent
 from voxl.default_config import (
     ENABLE_VSYNC as DEFAULT_ENABLE_VSYNC,
 )
@@ -19,7 +20,6 @@ from voxl.default_config import (
 from voxl.default_config import (
     WINDOW_WIDTH as DEFAULT_WIDTH,
 )
-from voxl.events import DebugDrawCall, DrawCall, KeyEvent, MouseMoveEvent
 from voxl.types import GlfwWindowPointer, KeyState
 
 from .glfw_keymap import get_key_name

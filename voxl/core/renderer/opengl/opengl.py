@@ -25,11 +25,16 @@ from voxl.constants import (
     WINDOW_BACKEND_HEADLESS,
 )
 from voxl.core import Core
+from voxl.core.events import (
+    AssetsLoaded,
+    DrawCall,
+    QuadMeshCreated,
+    QuadMeshUpdated,
+)
 from voxl.core.renderer.opengl.quad_mesh import OpenGLQuadMesh
 from voxl.core.renderer.renderer import Renderer, RendererConfig
 from voxl.core.scene import SceneGraph
 from voxl.core.windowing.headless import Window
-from voxl.events import AssetsLoaded, DrawCall, QuadMeshCreated, QuadMeshUpdated
 
 from .shader import OpenGLShader
 
