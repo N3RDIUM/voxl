@@ -110,6 +110,9 @@ class OpenGLRenderer(Renderer):
         for name in self.core.asset_manager().textures:
             tex_data = self.core.asset_manager().textures[name]
             textures.append(tex_data)
+
+        if len(textures) == 0:
+            return
         layer_data = np.stack(textures, axis=0)
 
         self.texture = glGenTextures(1)

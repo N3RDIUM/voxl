@@ -10,11 +10,10 @@ from dependency_injector.wiring import Provide, inject
 from voxl.core import AssetManager
 from voxl.core.events import DebugDrawCall
 from voxl.core.renderer.renderer import Renderer
-from voxl.core.scene import Quad, QuadMesh, SceneGraph
+from voxl.core.scene import SceneGraph
 from voxl.core.windowing.headless import Window
 from voxl.di_containers import Voxl
 from voxl.player import Player
-from voxl.terrain import cube
 
 
 def fps_meter(event: DebugDrawCall):
@@ -39,15 +38,7 @@ def main(
     """
 
     asset_manager.load_assets("./assets/", "voxl")
-    _ = renderer
-
-    mesh: QuadMesh = scene_graph.request_quad_mesh("example", create=True)
-    data: list[Quad] = cube((0, 0, -8))
-    mesh.set_data(data)
-    mesh.visible = True
-
-    # changes to a quad mesh won't be reflected unless this is called:
-    scene_graph.update_quad_mesh("example")
+    _ = renderer, scene_graph
 
     # player
     _ = Player(window)
