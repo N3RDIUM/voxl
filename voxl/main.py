@@ -17,13 +17,12 @@ from voxl.player import Player
 from voxl.terrain import cube
 
 
-def hello_imgui(event: DebugDrawCall):
-    _ = event
+def fps_meter(event: DebugDrawCall):
+    dt = event.dt
+    fps = int(1 / dt)
 
-    imgui.begin("Debug")
-    imgui.text("Hello from ImGui")
-    if imgui.button("Click me"):
-        print("button clicked")
+    imgui.begin("Performance")
+    imgui.text(f"{fps} FPS")
     imgui.end()
 
 
@@ -54,7 +53,7 @@ def main(
     _ = Player(window)
 
     # hud
-    window.core.event_manager().listen(DebugDrawCall, hello_imgui)  # pyright:ignore[reportArgumentType]
+    window.core.event_manager().listen(DebugDrawCall, fps_meter)  # pyright:ignore[reportArgumentType]
 
     try:
         window.mainloop()

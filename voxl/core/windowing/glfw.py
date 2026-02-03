@@ -151,7 +151,7 @@ class GlfwWindow(Window):
 
             self.imgui_impl.process_inputs()
             imgui.new_frame()
-            self.core.event_manager().emit(DebugDrawCall())
+            self.core.event_manager().emit(DebugDrawCall(dt=dt))
             imgui.render()
             self.imgui_impl.render(imgui.get_draw_data())
 

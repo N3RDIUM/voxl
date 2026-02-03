@@ -11,7 +11,8 @@ class DrawCall(Event):
 
 
 @dataclass
-class DebugDrawCall(Event): ...
+class DebugDrawCall(Event):
+    dt: float
 
 
 @dataclass
