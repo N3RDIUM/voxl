@@ -6,17 +6,17 @@ A highly optimized procedural voxel engine written from scratch in Python.
 - [x] The event manager has been implemented, now to integrate it.
 - [x] Scene graph handles quad meshes, the renderers follow them.
 - [x] Write stubs, ensure type safety for the `pyglm` module.
-- [ ] Player for camera controls.
-- [ ] Asset manager: textures.
-- [ ] Decide where to keep the server.
+- [x] Player for camera controls.
+- [x] Asset manager: textures.
+- [x] Decide where to keep the server.
+- [ ] Server-side terrain chunk generation w/ octree impl
+- [ ] Basic client-side rendering of these^ chunks
+- [ ] Document how everything works for real.
 
 ## Roadmap
-- [ ] CPU-side procedural chunk generation using pyfastnoisesimd/cython.
-- [ ] GPU-side greedy meshing.
-- [ ] Improve terrain generation, make it more interesting.
-- [ ] Break/place blocks
-- [ ] Player physics
-- [ ] Block shading / proper shaders / skybox / sun / moon / stars / volumetric
+- [ ] Generate "interesting" terrain.
+- [ ] Implement structure generation.
+- [ ] Implement true voxel lighting, on the client using compute shaders.
 
 ## Usage
 
