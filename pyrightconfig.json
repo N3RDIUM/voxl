@@ -1,4 +1,4 @@
 {
-    "include": ["voxl"], 
+    "include": ["src"], 
     "stubPath": "stubs/"
 }
