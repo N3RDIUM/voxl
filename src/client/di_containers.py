@@ -30,7 +30,9 @@ class Voxl(containers.DeclarativeContainer):
 
     window = providers.Selector(
         config.window.backend,  # todo error handling for unexpected backend str
-        headless=providers.Singleton(windowing.Window, config=config.window),
+        headless=providers.Singleton(
+            windowing.Window, config=config.window, core=core
+        ),
         glfw=providers.ThreadLocalSingleton(  # glfw isnt thread-safe
             windowing.GlfwWindow, config=config.window, core=core
         ),
