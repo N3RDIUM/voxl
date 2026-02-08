@@ -73,7 +73,7 @@ mkShell {
     python312Packages.sphinx-sitemap
     python312Packages.sphinx-multiversion # todo configure
 
-    # Outsourced deps (also necessary)
+    # Custom nix deps (also necessary)
     dependency-injector
     pyfastnoisesimd
     imgui
