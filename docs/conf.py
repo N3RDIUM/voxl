@@ -42,7 +42,7 @@ sitemap_indent = 4
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "furo"
-html_theme_options = {
+html_theme_options = {  # Gruvbox theme to match with n3rdium.dev
     "light_css_variables": {
         "color-problematic": "#cc241d",
         "color-foreground-primary": "#3c3836",

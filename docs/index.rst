@@ -1,8 +1,3 @@
-.. voxl documentation master file, created by
-   sphinx-quickstart on Wed Jan 14 16:26:00 2026.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 voxl documentation
 ==================
 
@@ -20,5 +15,8 @@ Get started with the `Usage Guide`_.
    :maxdepth: 3
    :caption: Contents:
 
-   api
+   client_api
+   engine_api
+   server_api
+   common_api
 

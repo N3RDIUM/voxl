@@ -3,18 +3,13 @@ A highly optimized procedural voxel engine written from scratch in Python.
 [Screenshots!](docs/screenshots/README.md)
 
 ## TODOs
-- [x] The event manager has been implemented, now to integrate it.
-- [x] Scene graph handles quad meshes, the renderers follow them.
-- [x] Write stubs, ensure type safety for the `pyglm` module.
-- [x] Player for camera controls.
-- [x] Asset manager: textures.
-- [x] Decide where to keep the server.
-- [ ] Server-side terrain chunk generation w/ octree impl
-- [ ] Basic client-side rendering of these^ chunks
+- [x] Update the directory structure.
+- [ ] Chunk generation with octree impl.
+- [ ] Client-side rendering of these^ chunks.
 - [ ] Document how everything works for real.
 
 ## Roadmap
-- [ ] Generate "interesting" terrain.
+- [ ] Generate interesting terrain.
 - [ ] Implement structure generation.
 - [ ] Implement true voxel lighting, on the client using compute shaders.
 
@@ -38,6 +33,6 @@ nix-shell
 
 Now, to start Voxl, run:
 ```bash
-python -m voxl.main
+python -m src.client.main
 ```
 
