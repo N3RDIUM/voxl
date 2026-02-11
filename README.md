@@ -4,6 +4,8 @@ A highly optimized procedural voxel engine written from scratch in Python.
 
 ## TODOs
 - [x] Update the directory structure.
+- [x] Engine: provide an "update"/"tick" listener that runs on another thread.
+- [ ] Read about ECS. Then implement a basic/minimal ECS inspired by bevy.
 - [ ] Chunk generation with octree impl.
 - [ ] Client-side rendering of these^ chunks.
 - [ ] Document how everything works for real.
