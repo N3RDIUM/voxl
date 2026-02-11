@@ -9,6 +9,8 @@ OPENGL_CORE_PROFILE: int
 PRESS: int
 RELEASE: int
 REPEAT: int
+VISIBLE: int
+FALSE: int
 
 # Key constants
 KEY_SPACE: int

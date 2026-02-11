@@ -16,6 +16,11 @@ class DebugDrawCall(Event):
 
 
 @dataclass
+class UpdateTick(Event):
+    dt: float
+
+
+@dataclass
 class AssetsLoaded(Event):
     prefix: str
 

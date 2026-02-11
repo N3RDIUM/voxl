@@ -1,3 +1,4 @@
+from threading import Thread
 from time import perf_counter
 from typing import override
 
@@ -19,7 +20,13 @@ from src.engine.default_config import (
 from src.engine.default_config import (
     WINDOW_WIDTH as DEFAULT_WIDTH,
 )
-from src.engine.events import DebugDrawCall, DrawCall, KeyEvent, MouseMoveEvent
+from src.engine.events import (
+    DebugDrawCall,
+    DrawCall,
+    KeyEvent,
+    MouseMoveEvent,
+    UpdateTick,
+)
 from src.engine.types import GlfwWindowPointer, KeyState
 
 from .glfw_keymap import get_key_name
@@ -59,6 +66,7 @@ class GlfwWindow(Window):
     """
 
     window: GlfwWindowPointer
+    update_thread: Thread
 
     def __init__(self, config: WindowConfig, core: Core) -> None:
         """Initialize the glfw window and configure it.
@@ -88,6 +96,10 @@ class GlfwWindow(Window):
             glfw.terminate()
             raise Exception("Could not create glfw window")
         glfw.make_context_current(self.window)
+
+        # start update thread with shared context
+        self.update_thread = Thread(target=self.update_loop, daemon=True)
+        self.update_thread.start()
 
         # imgui context
         imgui.create_context()
@@ -160,6 +172,25 @@ class GlfwWindow(Window):
 
         glfw.terminate()
         self.logger.info("Window closed")
+
+    @override
+    def update_loop(self) -> None:
+        glfw.window_hint(glfw.VISIBLE, glfw.FALSE)
+        shared_context: GlfwWindowPointer = glfw.create_window(
+            1, 1, "Voxl Glfw Shared Context", None, self.window
+        )
+        glfw.make_context_current(shared_context)
+        dt = 1 / 60
+
+        while not glfw.window_should_close(self.window):
+            t0 = perf_counter()
+            glfw.poll_events()
+
+            self.core.event_manager().emit(UpdateTick(dt=dt))
+
+            glfw.swap_buffers(shared_context)
+            glfw.poll_events()
+            dt = perf_counter() - t0
 
     @override
     def request_mouse_lock(self, mode: bool) -> None:

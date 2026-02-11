@@ -1,9 +1,10 @@
+import threading
 from logging import Logger, getLogger
 from typing import Callable, TypedDict
 
 from src.engine import Core
 from src.engine.constants import WINDOW_BACKEND_HEADLESS
-from src.engine.events import DrawCall
+from src.engine.events import DrawCall, UpdateTick
 from src.engine.types import WindowBackend as WindowBackendType
 
 
@@ -48,6 +49,10 @@ class Window:
             )
 
         if config.get("backend") == WINDOW_BACKEND_HEADLESS:
+            self.update_thread: threading.Thread = threading.Thread(
+                target=self.update_loop, daemon=True
+            )
+            self.update_thread.start()
             self.logger.warning(
                 "Running with a headless window. No window will be displayed."
             )
@@ -65,6 +70,10 @@ class Window:
         """
 
         self.mouse_locked = mode
+
+    def update_loop(self) -> None:
+        while True:
+            self.core.event_manager().emit(UpdateTick(dt=0.0))
 
     @property
     def size(self) -> tuple[int, int]:

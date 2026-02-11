@@ -36,7 +36,7 @@ def main(
     # player
     _ = Player(window)
 
-    # hud
+    # event listeners
     window.core.event_manager().listen(DebugDrawCall, fps_meter)  # pyright:ignore[reportArgumentType]
 
     try:
