@@ -23,9 +23,9 @@ class Player:
         window.request_mouse_lock(True)
 
         event_manager: EventManager = window.core.event_manager()
-        event_manager.listen(KeyEvent, self.on_key)  # pyright:ignore[reportArgumentType]
-        event_manager.listen(MouseMoveEvent, self.on_mouse_move)  # pyright:ignore[reportArgumentType]
-        event_manager.listen(DrawCall, self.update)  # pyright:ignore[reportArgumentType]
+        event_manager.listen(KeyEvent, self.on_key)
+        event_manager.listen(MouseMoveEvent, self.on_mouse_move)
+        event_manager.listen(DrawCall, self.update)
 
     def on_key(self, event: KeyEvent) -> None:
         self.keys[event.key_name] = event.state != KeyState.RELEASE

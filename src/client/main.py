@@ -37,7 +37,7 @@ def main(
     _ = Player(window)
 
     # event listeners
-    window.core.event_manager().listen(DebugDrawCall, fps_meter)  # pyright:ignore[reportArgumentType]
+    window.core.event_manager().listen(DebugDrawCall, fps_meter)
 
     try:
         window.mainloop()

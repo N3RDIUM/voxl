@@ -61,7 +61,7 @@ class Renderer:
             )
 
         # register listeners
-        self.core.event_manager().listen(DrawCall, self.render)  # pyright:ignore[reportArgumentType]
+        self.core.event_manager().listen(DrawCall, self.render)
 
     def render(self, event: DrawCall) -> None:
         """Does nothing."""

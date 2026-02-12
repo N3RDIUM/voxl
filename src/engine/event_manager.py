@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Callable
+from typing import Callable, TypeVar, cast
 
 # TODO implement logging for this.
 
@@ -7,6 +7,9 @@ from typing import Callable
 @dataclass
 class Event:
     """Base event dataclass that stores nothing."""
+
+
+E = TypeVar("E", bound=Event)
 
 
 class EventManager:
@@ -18,21 +21,20 @@ class EventManager:
         self.listeners = {}
 
     def listen(
-        self, event_type: type[Event], callback: Callable[[Event], None]
+        self, event_type: type[E], callback: Callable[[E], None]
     ) -> None:
         """Register an event listener with a callback"""
-
-        if self.listeners.get(event_type) is None:
+        if event_type not in self.listeners:
             self.listeners[event_type] = []
-        self.listeners[event_type].append(callback)
+        self.listeners[event_type].append(
+            cast(Callable[[Event], None], callback)
+        )
 
     def emit(self, event: Event) -> None:
         """Emit an event."""
-
         event_type: type[Event] = type(event)
-        if self.listeners.get(event_type) is None:
+        if event_type not in self.listeners:
             return
         callbacks = self.listeners[event_type]
-
         for callback in callbacks:
             callback(event)

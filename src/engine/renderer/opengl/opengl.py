@@ -101,9 +101,9 @@ class OpenGLRenderer(Renderer):
 
         # register listener(s)
         event_manager = self.core.event_manager()
-        event_manager.listen(AssetsLoaded, self.load_assets)  # pyright:ignore[reportArgumentType]
-        event_manager.listen(QuadMeshCreated, self.on_create_quad_mesh)  # pyright:ignore[reportArgumentType]
-        event_manager.listen(QuadMeshUpdated, self.on_update_quad_mesh)  # pyright:ignore[reportArgumentType]
+        event_manager.listen(AssetsLoaded, self.load_assets)
+        event_manager.listen(QuadMeshCreated, self.on_create_quad_mesh)
+        event_manager.listen(QuadMeshUpdated, self.on_update_quad_mesh)
 
     def load_assets(self, event: AssetsLoaded) -> None:
         textures: list[np.ndarray] = []
