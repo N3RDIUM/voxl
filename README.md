@@ -1,17 +1,16 @@
 # Voxl
-- [ ] Maybe shift the renderer to use wgpu only.
 A highly optimized procedural voxel engine written from scratch in Python.
 [Screenshots!](docs/screenshots/README.md)
 
 ## TODOs
 - [x] Update the directory structure.
 - [x] Engine: provide an "update"/"tick" listener that runs on another thread.
-- [ ] Engine: integrate the compute manager with the update tick event.
-- [ ] Read about ECS. Then implement a basic/minimal ECS inspired by bevy. Thread-local, non-parallel for now.
+- [x] Read about ECS. Then implement a basic/minimal ECS inspired by bevy. Thread-local, non-parallel for now.
 - [ ] Asset manager: load assets individually instead of by dir, group by type, do something about that weird AssetsLoaded event (remove it).
 - [ ] Quad renderer: instead of relying on AssetsLoaded, move the shader files to src.engine.opengl and load independently.
 - [ ] ECSify the renderer and the quad renderer. Unified buffer for common types of instances, give out "mesh IDs" with index ranges.
 - [ ] Add decorator support for registering event listeners and ECS systems.
+- [ ] Engine: integrate the compute manager with the update tick event.
 - [ ] Chunk generation with octree impl.
 - [ ] Client-side rendering of these^ chunks.
 - [ ] Document how everything works for real.
