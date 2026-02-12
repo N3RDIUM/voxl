@@ -1,5 +1,5 @@
 # Voxl
-A highly optimized procedural voxel engine written from scratch in Python.
+A procedural voxel engine written from scratch in Python.
 [Screenshots!](docs/screenshots/README.md)
 
 ## TODOs
