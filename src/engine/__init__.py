@@ -4,6 +4,7 @@ from .asset_manager import AssetManager, AssetManagerConfig
 from .camera import Camera, CameraConfig
 from .compute import ComputeManager, ComputeManagerConfig, ComputePipeline
 from .core import Core
+from .ecs import ECS, Component, Entity
 from .event_manager import Event, EventManager
 
 __all__ = [
@@ -17,4 +18,7 @@ __all__ = [
     "Core",
     "EventManager",
     "Event",
+    "Entity",
+    "Component",
+    "ECS",
 ]
