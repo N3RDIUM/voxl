@@ -23,7 +23,7 @@ class ECS:
     entities: dict[Entity, Archetype]
     components: ComponentTable
     archetypes: dict[frozenset[type[Component]], Archetype]
-    archetype_table: dict[Archetype, list[Entity]]
+    archetype_table: dict[Archetype, set[Entity]]
 
     def __init__(self):
         self._next_entity_id = 0
@@ -43,8 +43,8 @@ class ECS:
         self.components[entity] = {}
 
         if self.archetype_table.get(archetype) is None:
-            self.archetype_table[archetype] = []
-        self.archetype_table[archetype].append(entity)
+            self.archetype_table[archetype] = set([])
+        self.archetype_table[archetype].add(entity)
 
         return entity
 
@@ -74,7 +74,7 @@ class ECS:
         current_archetype = self.entities[entity]
 
         self.archetype_table[current_archetype].remove(entity)
-        self.archetype_table[archetype].append(entity)
+        self.archetype_table[archetype].add(entity)
 
         self.entities[entity] = archetype
 
