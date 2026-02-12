@@ -109,4 +109,3 @@ class ECS:
 
         for entity in entities:
             yield entity, self.components[entity]
-
