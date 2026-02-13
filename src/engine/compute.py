@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from logging import Logger, getLogger, ERROR
+from logging import ERROR, Logger, getLogger
 from time import perf_counter
 
 import numpy as np

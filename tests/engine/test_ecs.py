@@ -2,7 +2,7 @@ import unittest
 from dataclasses import dataclass
 from typing import cast
 
-from src.engine.ecs import Component, ECS
+from src.engine.ecs import ECS, Component
 
 
 @dataclass

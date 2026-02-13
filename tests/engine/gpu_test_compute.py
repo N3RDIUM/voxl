@@ -1,10 +1,11 @@
-from typing import final
-from typing_extensions import override
 import unittest
+from typing import final
 
 import numpy as np
+from typing_extensions import override
 
 from src.engine.compute import ComputeManager, ComputePipeline
+
 
 @final
 class TestCompute(unittest.TestCase):
