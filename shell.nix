@@ -35,6 +35,7 @@ mkShell {
     python312
     python312Packages.pyglm
     python312Packages.cython
+    python312Packages.distutils
     python312Packages.numpy
     python312Packages.pillow
     python312Packages.pyzmq
