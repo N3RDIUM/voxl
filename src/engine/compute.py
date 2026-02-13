@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from logging import Logger, getLogger
+from logging import Logger, getLogger, ERROR
 from time import perf_counter
 
 import numpy as np
@@ -26,6 +26,8 @@ from src.engine.default_config import (
     POWER_PREFERENCE as DEFAULT_POWER_PREFERENCE,
 )
 from src.engine.types import ComputeBindings
+
+getLogger("wgpu").setLevel(ERROR)
 
 
 class ComputeManagerConfig(TypedDict):
