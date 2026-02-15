@@ -6,14 +6,14 @@ A procedural voxel engine written from scratch in Python.
 - [x] Update the directory structure.
 - [x] Engine: provide an "update"/"tick" listener that runs on another thread.
 - [x] Read about ECS. Then implement a basic/minimal ECS inspired by bevy. Thread-local, non-parallel for now.
-- [ ] Asset manager: load assets individually instead of by dir, group by type, do something about that weird AssetsLoaded event (remove it).
-- [ ] Quad renderer: instead of relying on AssetsLoaded, move the shader files to src.engine.opengl and load independently.
-- [ ] ECSify the renderer and the quad renderer. Unified buffer for common types of instances, give out "mesh IDs" with index ranges.
+- [ ] All docstrings what -> why
+- [ ] Renderer: Implement as ECS-based, using wgpu.
+- [ ] Documentation of the ECS system.
 - [ ] Add decorator support for registering event listeners and ECS systems.
-- [ ] Engine: integrate the compute manager with the update tick event.
+- [ ] Engine: integrate the compute manager with the update tick event. handled by window instead of computemanager in case of headless use.
+- [ ] Separate the engine into a separate repo, package the engine under *that* name and put it up on PyPI. Test on a win vm too (eek).
 - [ ] Chunk generation with octree impl.
 - [ ] Client-side rendering of these^ chunks.
-- [ ] Document how everything works for real.
 
 ## Roadmap
 - [ ] Generate interesting terrain.
