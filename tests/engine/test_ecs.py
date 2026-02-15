@@ -30,9 +30,9 @@ class TestECS(unittest.TestCase):
         e2 = ecs.spawn()
         e3 = ecs.spawn()
 
-        self.assertEqual(e1.id, 0)
-        self.assertEqual(e2.id, 1)
-        self.assertEqual(e3.id, 2)
+        self.assertEqual(e1, 0)
+        self.assertEqual(e2, 1)
+        self.assertEqual(e3, 2)
 
         self.assertEqual(len(ecs.entities), 3)
 
@@ -147,8 +147,7 @@ class TestECS(unittest.TestCase):
             e3, [Position(x=3.0, y=3.0), Velocity(dx=0.3, dy=0.3)]
         )
 
-        results = list(ecs.query([Position]))
-
+        results, _ = ecs.query([Position])
         self.assertEqual(len(results), 3)
 
     def test_query_filters_by_component_types(self):
@@ -163,11 +162,11 @@ class TestECS(unittest.TestCase):
         ecs.set_components(e2, [Position(x=2.0, y=2.0)])
         ecs.set_components(e3, [Velocity(dx=0.3, dy=0.3)])
 
-        results = list(ecs.query([Position, Velocity]))
+        results, _ = ecs.query([Position, Velocity])
 
         self.assertEqual(len(results), 1)
-        entity, _ = results[0]
-        self.assertEqual(entity.id, e1.id)
+        entity = results[0]
+        self.assertEqual(entity, e1)
 
     def test_query_returns_component_lookup(self):
         ecs = ECS()
@@ -176,10 +175,11 @@ class TestECS(unittest.TestCase):
             entity, [Position(x=1.5, y=2.5), Velocity(dx=0.1, dy=0.2)]
         )
 
-        results = list(ecs.query([Position, Velocity]))
-
-        self.assertEqual(len(results), 1)
-        entity, lookup = results[0]
+        _, components = ecs.query([Position, Velocity])
+        lookup: dict[type[Component], Component] = {
+            Position: components[Position][0],
+            Velocity: components[Velocity][0],
+        }
         pos = cast(Position, lookup[Position])
         vel = cast(Velocity, lookup[Velocity])
         self.assertEqual(pos.x, 1.5)
@@ -192,8 +192,7 @@ class TestECS(unittest.TestCase):
         e1 = ecs.spawn()
         ecs.set_components(e1, [Position(x=1.0, y=1.0)])
 
-        results = list(ecs.query([Velocity]))
-
+        results, _ = ecs.query([Velocity])
         self.assertEqual(len(results), 0)
 
     def test_query_with_tag_component(self):
@@ -269,5 +268,5 @@ class TestECS(unittest.TestCase):
 
         archetype, _ = ecs.entities[e1]
 
-        self.assertEqual(ecs.entity_rows[archetype][0].id, e1.id)
-        self.assertEqual(ecs.entity_rows[archetype][1].id, e2.id)
+        self.assertEqual(ecs.entity_rows[archetype][0], e1)
+        self.assertEqual(ecs.entity_rows[archetype][1], e2)
