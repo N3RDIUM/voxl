@@ -21,11 +21,6 @@ class UpdateTick(Event):
 
 
 @dataclass
-class AssetsLoaded(Event):
-    prefix: str
-
-
-@dataclass
 class QuadMeshCreated(Event):
     name: str
 

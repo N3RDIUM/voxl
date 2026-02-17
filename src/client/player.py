@@ -23,8 +23,10 @@ class Player:
         window.request_mouse_lock(True)
 
         event_manager: EventManager = window.core.event_manager()
-        event_manager.listen(KeyEvent, self.on_key)
-        event_manager.listen(MouseMoveEvent, self.on_mouse_move)
+        event_manager.listen(KeyEvent, self.on_key, threadsafe=True)
+        event_manager.listen(
+            MouseMoveEvent, self.on_mouse_move, threadsafe=True
+        )
         event_manager.listen(DrawCall, self.update)
 
     def on_key(self, event: KeyEvent) -> None:
