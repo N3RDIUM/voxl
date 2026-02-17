@@ -9,6 +9,7 @@ A procedural voxel engine written from scratch in Python.
 - [ ] All docstrings what -> why
 - [ ] Renderer: Implement as ECS-based, using wgpu.
 - [ ] Documentation of the ECS system.
+- [ ] Rewrite the ECS system to Cython and wrap in engine.ecs
 - [ ] Add decorator support for registering event listeners and ECS systems.
 - [ ] Engine: integrate the compute manager with the update tick event. handled by window instead of computemanager in case of headless use.
 - [ ] Separate the engine into a separate repo, package the engine under *that* name and put it up on PyPI. Test on a win vm too (eek).
