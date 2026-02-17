@@ -33,6 +33,7 @@ mkShell {
   buildInputs = [
     # Necessary dependencies
     python312
+    python312Packages.bidict
     python312Packages.pyglm
     python312Packages.cython
     python312Packages.distutils

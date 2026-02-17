@@ -46,19 +46,6 @@ class TestECS(unittest.TestCase):
         self.assertEqual(archetype, 0)
         self.assertEqual(row, 0)
 
-    def test_determine_archetype_unique_index(self):
-        ecs = ECS()
-
-        a1 = ecs.determine_archetype(frozenset({Position}))
-        a2 = ecs.determine_archetype(frozenset({Position, Velocity}))
-        a3 = ecs.determine_archetype(frozenset({Velocity}))
-        a4 = ecs.determine_archetype(frozenset({Position}))
-
-        self.assertEqual(a1, 0)
-        self.assertEqual(a2, 1)
-        self.assertEqual(a3, 2)
-        self.assertEqual(a4, 0)
-
     def test_determine_archetype_same_type_returns_same_index(self):
         ecs = ECS()
 
@@ -206,17 +193,6 @@ class TestECS(unittest.TestCase):
         results = list(ecs.query([Tag]))
 
         self.assertEqual(len(results), 2)
-
-    def test_archetypes_reverse_mapping(self):
-        ecs = ECS()
-
-        _ = ecs.determine_archetype(frozenset({Position}))
-        _ = ecs.determine_archetype(frozenset({Position, Velocity}))
-
-        self.assertEqual(ecs.archetypes_reverse[0], frozenset({Position}))
-        self.assertEqual(
-            ecs.archetypes_reverse[1], frozenset({Position, Velocity})
-        )
 
     def test_component_types_static_method(self):
         components: list[Component] = [

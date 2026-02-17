@@ -2,6 +2,9 @@ from collections.abc import Collection
 from dataclasses import dataclass
 from typing import TypeVar, cast
 
+from bidict import bidict
+
+# TODO move to types
 type Entity = int
 type RowIndex = int
 type Archetype = int
@@ -14,29 +17,26 @@ class Component: ...
 C = TypeVar("C", bound=Component)
 
 
+# TODO impl that clever bitshifting thing for the archetypes
 class ECS:
     _next_entity_id: Entity
-    _next_archetype: Archetype
+    _next_type_id: int
 
     entities: dict[Entity, tuple[Archetype, RowIndex]]
     entity_rows: dict[Archetype, list[Entity]]
     components: dict[Archetype, dict[type[Component], list[Component]]]
 
-    archetypes: dict[frozenset[type[Component]], Archetype]
-    archetypes_reverse: dict[Archetype, frozenset[type[Component]]]
-    archetypes_by_component: dict[type[Component], set[Archetype]]
+    types: bidict[int, type[Component]]
 
     def __init__(self):
         self._next_entity_id = 0
-        self._next_archetype = 0
+        self._next_type_id = 0
 
         self.entities = {}
         self.entity_rows = {}
         self.components = {}
 
-        self.archetypes = {}
-        self.archetypes_reverse = {}
-        self.archetypes_by_component = {}
+        self.types = bidict({})
 
     def spawn(self) -> Entity:
         empty_archetype = self.determine_archetype(frozenset())
@@ -57,24 +57,39 @@ class ECS:
     def determine_archetype(
         self, component_types: frozenset[type[Component]]
     ) -> Archetype:
-        try:
-            return self.archetypes[component_types]
-        except KeyError:
-            pass
+        archetype: Archetype = 0
+        for component_type in component_types:
+            place: int = 0
 
-        archetype = self._next_archetype
-        self._next_archetype += 1
+            if component_type not in self.types.inverse:
+                self.types[self._next_type_id] = component_type
+                place = self._next_type_id
+                self._next_type_id += 1
+            else:
+                place = self.types.inverse[component_type]
 
-        self.archetypes[component_types] = archetype
-        self.archetypes_reverse[archetype] = component_types
+            archetype |= 1 << place
 
-        for t in component_types:
-            self.archetypes_by_component.setdefault(t, set()).add(archetype)
-
-        self.components[archetype] = {t: [] for t in component_types}
-        self.entity_rows[archetype] = []
+        if archetype not in self.entity_rows:
+            self.entity_rows[archetype] = []
+        if archetype not in self.components:
+            self.components[archetype] = {t: [] for t in component_types}
 
         return archetype
+
+    def determine_types(self, archetype: Archetype) -> set[type[Component]]:
+        types: set[type[Component]] = set()
+
+        if archetype == 0:
+            return types
+
+        # Loop and bitshift until it becomes zero. Won't that be more efficient?
+        # In some cases*
+        for type_id, component_type in self.types.items():
+            if archetype & (1 << type_id):
+                types.add(component_type)
+
+        return types
 
     @staticmethod
     def component_types(
@@ -109,7 +124,7 @@ class ECS:
 
     def _remove_components(self, entity: Entity) -> None:
         archetype, row = self.entities[entity]
-        component_types = self.archetypes_reverse[archetype]
+        component_types = self.determine_types(archetype)
 
         if not component_types:
             last_row = len(self.entity_rows[archetype]) - 1
@@ -153,20 +168,12 @@ class ECS:
         if not required:
             return [], {}
 
-        candidate_sets = [self.archetypes_by_component.get(t) for t in required]
-
-        if not candidate_sets or any(s is None for s in candidate_sets):
-            return [], {}
-
-        first_set = candidate_sets[0]
-        assert first_set is not None
-        matching_archetypes = first_set.copy()
-        for s in candidate_sets[1:]:
-            assert s is not None
-            matching_archetypes &= s
-
-        if not matching_archetypes:
-            return [], {}
+        required_mask: Archetype = self.determine_archetype(frozenset(required))
+        matching_archetypes = (
+            archetype
+            for archetype in self.entity_rows.keys()
+            if (archetype & required_mask) == required_mask
+        )
 
         result_entities: list[Entity] = []
         result_components: dict[type[C], list[C]] = {t: [] for t in required}
