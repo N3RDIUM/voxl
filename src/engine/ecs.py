@@ -1,23 +1,13 @@
 from collections.abc import Collection
-from dataclasses import dataclass
 from typing import TypeVar, cast
 
 from bidict import bidict
 
-# TODO move to types
-type Entity = int
-type RowIndex = int
-type Archetype = int
-
-
-@dataclass
-class Component: ...
-
+from .types import Archetype, Component, Entity, RowIndex
 
 C = TypeVar("C", bound=Component)
 
 
-# TODO impl that clever bitshifting thing for the archetypes
 class ECS:
     _next_entity_id: Entity
     _next_type_id: int
@@ -178,6 +168,8 @@ class ECS:
         result_entities: list[Entity] = []
         result_components: dict[type[C], list[C]] = {t: [] for t in required}
 
+        # this is still a little slow, but "good enough" for now.
+        # the rest of the function runs in ~2us, if this loop isn't executed.
         for archetype in matching_archetypes:
             entity_list = self.entity_rows[archetype]
             component_data = self.components[archetype]

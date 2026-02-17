@@ -1,5 +1,6 @@
 """Type alias declarations all go here."""
 
+from dataclasses import dataclass
 from enum import Enum
 from typing import Literal
 
@@ -62,3 +63,13 @@ class KeyState(Enum):
     PRESS = 0
     RELEASE = 1
     REPEAT = 2
+
+
+# ecs
+type Entity = int
+type RowIndex = int
+type Archetype = int
+
+
+@dataclass
+class Component: ...
