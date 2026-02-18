@@ -1,20 +1,20 @@
 {
   lib,
-  fetchPypi,
+  fetchurl,
   buildPythonPackage,
   cython,
   setuptools,
-  typingextensions,
+  typing-extensions
 }:
 
 buildPythonPackage rec {
   pname = "dependency_injector";
   version = "4.48.3";
-  format = "pyproject";
+  format = "wheel";
 
-  src = fetchPypi {
-    inherit pname version;
-    hash = "sha256-EG5DpqmVmyxJkm7cRb3wf9w3e8X6H9WQEnQVkN8wsgw=";
+  src = fetchurl {
+    url = "https://files.pythonhosted.org/packages/c3/da/068f23d12b55cda6e2d5e7783d1b602aa40f0889f35cf182ecfa1b12f7b8/dependency_injector-4.48.3-cp310-abi3-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl";
+    hash = "sha256-VKori4/wV1VasD7pgDXrQRINMPjsIgz0OqOxF/a5sbE=";
   };
 
   propagatedBuildInputs = [
@@ -23,7 +23,7 @@ buildPythonPackage rec {
   ];
   nativeBuildInputs = [
     cython
-    typingextensions
+    typing-extensions
   ];
 
   doCheck = false;

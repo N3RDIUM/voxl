@@ -3,28 +3,9 @@
 }:
 
 let
-  pyfastnoisesimd = import ./deps/pyfastnoisesimd.nix {
-    inherit (pkgs) lib fetchPypi;
-    buildPythonPackage = pkgs.python312Packages.buildPythonPackage;
-    numpy = pkgs.python312Packages.numpy;
-  };
-
-  dependency-injector = import ./deps/dependency_injector.nix {
-    inherit (pkgs) lib fetchPypi;
-    buildPythonPackage = pkgs.python312Packages.buildPythonPackage;
-    cython = pkgs.python312Packages.cython;
-    setuptools = pkgs.python312Packages.setuptools;
-    typingextensions = pkgs.python312Packages.typing-extensions;
-  };
-
-  imgui = import ./deps/imgui.nix {
-    inherit (pkgs) lib fetchPypi;
-    buildPythonPackage = pkgs.python312Packages.buildPythonPackage;
-    setuptools = pkgs.python312Packages.setuptools;
-    wheel = pkgs.python312Packages.wheel;
-    cython = pkgs.python312Packages.cython_0;
-    python3Packages = pkgs.python312Packages;
-  };
+    pyfastnoisesimd = pkgs.python314.pkgs.callPackage ./deps/pyfastnoisesimd.nix { };
+    dependency-injector = pkgs.python314.pkgs.callPackage ./deps/dependency_injector.nix { };
+    imgui-bundle = pkgs.python314.pkgs.callPackage ./deps/imgui_bundle.nix { };
 in
 
 with pkgs;
@@ -32,16 +13,16 @@ with pkgs;
 mkShell {
   buildInputs = [
     # Necessary dependencies
-    python312
-    python312Packages.bidict
-    python312Packages.pyglm
-    python312Packages.cython
-    python312Packages.distutils
-    python312Packages.numpy
-    python312Packages.pillow
-    python312Packages.pyzmq
-    python312Packages.pyyaml
-    python312Packages.wgpu-py
+    python314
+    python314Packages.bidict
+    python314Packages.pyglm
+    python314Packages.cython
+    python314Packages.distutils
+    python314Packages.numpy
+    python314Packages.pillow
+    python314Packages.pyzmq
+    python314Packages.pyyaml
+    python314Packages.wgpu-py
 
     # Vulkan compute backend
     vulkan-tools # For vulkaninfo, etc.
@@ -56,29 +37,29 @@ mkShell {
     pkg-config
 
     # glfw window backend
-    python312Packages.glfw
+    python314Packages.glfw
 
     # OpenGL render backend
-    python312Packages.pyopengl
-    python312Packages.pyopengl-accelerate
+    python314Packages.pyopengl
+    python314Packages.pyopengl-accelerate
 
     # Development
     ruff
     basedpyright
     nixfmt
-    python312Packages.mypy
+    python314Packages.mypy
 
     # Documentation
-    python312Packages.sphinx
-    python312Packages.furo
-    python312Packages.sphinx-copybutton
-    python312Packages.sphinx-sitemap
-    python312Packages.sphinx-multiversion # todo configure
+    python314Packages.sphinx
+    python314Packages.furo
+    python314Packages.sphinx-copybutton
+    python314Packages.sphinx-sitemap
+    python314Packages.sphinx-multiversion # todo configure
 
     # Custom nix deps (also necessary)
     dependency-injector
     pyfastnoisesimd
-    imgui
+    imgui-bundle
   ];
 
   nativeBuildInputs = [
